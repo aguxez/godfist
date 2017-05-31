@@ -11,7 +11,7 @@ First include `godfist` in your `mix.exs` and add it to your applications.
 ```elixir
 [extra_applications: :godfist, ...]
 ...
-{:godfist, "~> 0.1.0"}
+{:godfist, "~> 0.1.1"}
 ```
 
 ## Usage

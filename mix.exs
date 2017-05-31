@@ -3,7 +3,7 @@ defmodule Godfist.Mixfile do
 
   def project do
     [app: :godfist,
-     version: "0.1.0",
+     version: "0.1.1",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -27,16 +27,15 @@ defmodule Godfist.Mixfile do
   end
 
   def application do
-    [extra_applications: [:logger, :httpoison, :poison, :credo, :ex_rated]]
+    [extra_applications: [:logger, :httpoison, :poison, :ex_rated]]
   end
 
   defp deps do
     [
       {:httpoison, "~> 0.11.2"},
       {:poison, "~> 3.1"},
-      {:credo, "~> 0.7.4", only: [:dev, :test]},
       {:ex_rated, "~> 1.3"},
-      {:benchee, "~> 0.8.0", only: :dev},
+      {:credo, "~> 0.7.4", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: :dev}
     ]
   end
