@@ -1,10 +1,21 @@
 defmodule Godfist.Runes do
-  @moduledoc false
+  @moduledoc """
+  Module to interact with the Runes endpoint.
+  """
 
   alias Godfist.HTTP
 
   @v "v3"
 
+  @doc """
+  Get runes of a given summoner by id.
+
+  ## Example
+
+  ```elixir
+  iex> Godfist.Runes.summoner(:ru, summid)
+  ```
+  """
   def summoner(region, id) do
     rest = "/lol/platform/#{@v}/runes/by-summoner/#{id}"
 

@@ -31,9 +31,9 @@ defmodule Godfist.HTTP do
   defp parse({:ok, _}, url, rest) do
     case String.contains?(rest, "?") do
       true ->
-        {:ok, get_body("https://#{url <> rest}&api_key=#{@token}")}
+        get_body("https://#{url <> rest}&api_key=#{@token}")
       _ ->
-        {:ok, get_body("https://#{url <> rest}?api_key=#{@token}")}
+        get_body("https://#{url <> rest}?api_key=#{@token}")
     end
   end
   defp parse({:error, _}, _, _) do
@@ -45,9 +45,9 @@ defmodule Godfist.HTTP do
   defp get_body(url) do
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
-        Poison.decode!(body)
+        {:ok, Poison.decode!(body)}
       {:ok, %{status_code: 404}} ->
-        "Not found"
+        {:error, "Not found"}
       {:error, reason} ->
         reason
     end

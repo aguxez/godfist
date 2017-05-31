@@ -2,28 +2,28 @@ defmodule GodfistTest do
   use ExUnit.Case
 
   alias Godfist.{ChampionMastery, Champion, League, Status, Masteries,
-        Match, Runes}
+        Match, Runes, Spectator, Static, Summoner}
 
   @sumid 24244
   @sumids [200203, 24244]
-  @lasid 203629807
+  @lasid 204359681
   @lasmatchid 460035794
-  @naid 212650893
+  @naid 39626602
   @champid 64
 
   # Champion mastery tests.
   test "return information of player" do
-    assert {:ok, _} = ChampionMastery.by_summoner(@sumid, :lan)
+    assert {:ok, _} = ChampionMastery.by_summoner(:lan, @sumid)
   end
 
   test "returns information of single champion from player" do
-    {:ok, map} = ChampionMastery.by_champion(@sumid, @champid, :lan)
+    {:ok, map} = ChampionMastery.by_champion(:lan, @sumid, @champid)
 
     assert Map.has_key?(map, "championId") == true
   end
 
   test "returns total mastery points from player" do
-    {:ok, total} = ChampionMastery.total(@sumid, :lan)
+    {:ok, total} = ChampionMastery.total(:lan, @sumid)
 
     assert is_integer(total) == true
   end
@@ -98,5 +98,94 @@ defmodule GodfistTest do
   # Runes
   test "return runes from player" do
     assert {:ok, _} = Runes.summoner(:na, @naid)
+  end
+
+  # Spectator
+  test "get list of featured games" do
+    assert {:ok, _} = Spectator.featured_games(:ru)
+  end
+
+  # Static
+  test "returns static data of all champs" do
+    assert {:ok, _} = Static.all_champs(:oce)
+  end
+
+  test "return single champion by id" do
+    assert {:ok, _} = Static.champion(:oce, @champid)
+  end
+
+  test "return list of all items" do
+    assert {:ok, _} = Static.all_items(:ru)
+  end
+
+  test "return single item by id" do
+    assert {:ok, _} = Static.item(:ru, 1001)
+  end
+
+  test "return language strings data" do
+    assert {:ok, _} = Static.lang_strings(:oce)
+  end
+
+  test "return supported languages" do
+    assert {:ok, _} = Static.languages(:euw)
+  end
+
+  test "return map's data" do
+    assert {:ok, _} = Static.maps(:eune)
+  end
+
+  test "return static data of masteries" do
+    assert {:ok, _} = Static.all_masteries(:eune)
+  end
+
+  test "return single mastery by id" do
+    assert {:ok, _} = Static.mastery(:eune, 6111)
+  end
+
+  test "return static data of profile icons" do
+    assert {:ok, _} = Static.profile_icons(:oce)
+  end
+
+  test "return static data of realms" do
+    assert {:ok, _} = Static.realms(:oce)
+  end
+
+  test "return runes data" do
+    assert {:ok, _} = Static.all_runes(:na)
+  end
+
+  test "return single rune by id" do
+    assert {:ok, _} = Static.rune(:na, 5001)
+  end
+
+  test "return summoner spells" do
+    assert {:ok, _} = Static.sum_spells(:na)
+  end
+
+  test "return single spell by id" do
+    assert {:ok, _} = Static.spell(:oce, 34)
+  end
+
+  test "return versions" do
+    assert {:ok, _} = Static.versions(:eune)
+  end
+
+  # Summoner
+  test "return summoner by account id" do
+    assert {:ok, _} = Summoner.by_id(:na, @naid)
+  end
+
+  test "return summoner by name" do
+    assert {:ok, _} = Summoner.by_name(:lan, "Mjólner")
+  end
+
+  test "return summoner by sumoner id" do
+    assert {:ok, _} = Summoner.by_summid(:las, 12200604) # Summoner id
+  end
+
+  test "return id of summoner by name" do
+    id = Summoner.get_id(:las, "Laicram")
+
+    assert is_integer(id) == true
   end
 end
