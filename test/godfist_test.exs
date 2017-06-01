@@ -184,7 +184,7 @@ defmodule GodfistTest do
   end
 
   test "return id of summoner by name" do
-    id = Summoner.get_id(:las, "Laicram")
+    {:ok, id} = Summoner.get_id(:las, "Laicram")
 
     assert is_integer(id) == true
   end

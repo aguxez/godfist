@@ -15,15 +15,6 @@ defmodule Godfist.Static do
 
   @doc """
   Get a list of all champs.
-  """
-  def all_champs(region) do
-    rest = @endpoint <> "/champions"
-
-    HTTP.get(region: region, rest: rest)
-  end
-
-  @doc """
-  Get a single champion by id.
 
   One option must be passed, otherwise "all" is returned.
   Options are given with the `:filter` key with one of these values.
@@ -44,27 +35,68 @@ defmodule Godfist.Static do
   * `stats`
   * `tags`
   """
-  def champion(region, id, opts \\ [filter: "all"]) do
-    filter = Keyword.get(opts, :filter)
-    rest = @endpoint <> "/champions/#{id}?champData=#{filter}"
+  def all_champs(region, opts \\ []) do
+    tags = Keyword.get(opts, :filter, "all")
+    rest = @endpoint <> "/champions&tags=#{tags}"
+
+    HTTP.get(region: region, rest: rest)
+  end
+
+  @doc """
+  Get a single champion by id.
+
+  Refer to `all_champs/2` for a list of options.
+  """
+  def champion(region, id, opts \\ []) do
+    filter = Keyword.get(opts, :filter, "all")
+    rest = @endpoint <> "/champions/#{id}?tags=#{filter}"
 
     HTTP.get(region: region, rest: rest)
   end
 
   @doc """
   Get a list of all items.
+
+  One option must be passed, otherwise "all" is returned.
+
+  Pass on the `:filter` key with value of:
+
+  * `all`
+  * `colloq`
+  * `consumeOnFull`
+  * `consumed`
+  * `depth`
+  * `from`
+  * `gold`
+  * `groups`
+  * `hideFromAll`
+  * `image`
+  * `inStore`
+  * `into`
+  * `maps`
+  * `requiredChampion`
+  * `sanitizedDescription`
+  * `specialRecipe`
+  * `stacks`
+  * `stats`
+  * `tags`
+  * `tree`
   """
-  def all_items(region) do
-    rest = @endpoint <> "/items"
+  def all_items(region, opts \\ []) do
+    tag = Keyword.get(opts, :filter, "all")
+    rest = @endpoint <> "/items&tags=#{tag}"
 
     HTTP.get(region: region, rest: rest)
   end
 
   @doc """
   Get a single item by id.
+
+  Refer to `all_items/2` for a list of options.
   """
-  def item(region, id) do
-    rest = @endpoint <> "/items/#{id}"
+  def item(region, id, opts \\ []) do
+    tag = Keyword.get(opts, :filter, "all")
+    rest = @endpoint <> "/items/#{id}&tags=#{tag}"
 
     HTTP.get(region: region, rest: rest)
   end
@@ -98,18 +130,32 @@ defmodule Godfist.Static do
 
   @doc """
   Get a list of all masteries.
+
+  Opts is atom `:filter` with a value of one of:
+
+  * `all` (Default)
+  * `image`
+  * `masteryTree`
+  * `prereq`
+  * `ranks`
+  * `sanitizedDescription`
+  * `tree`
   """
-  def all_masteries(region) do
-    rest = @endpoint <> "/masteries"
+  def all_masteries(region, opts \\ []) do
+    tag = Keyword.get(opts, :filter, "all")
+    rest = @endpoint <> "/masteries&tags=#{tag}"
 
     HTTP.get(region: region, rest: rest)
   end
 
   @doc """
   Get a single mastery by id.
+
+  Refer to `all_masteries/2` for a list of options.
   """
-  def mastery(region, id) do
-    rest = @endpoint <> "/masteries/#{id}"
+  def mastery(region, id, opts \\ []) do
+    tag = Keyword.get(opts, :filter, "all")
+    rest = @endpoint <> "/masteries/#{id}&tags=#{tag}"
 
     HTTP.get(region: region, rest: rest)
   end
@@ -134,15 +180,26 @@ defmodule Godfist.Static do
 
   @doc """
   Get a list of all runes.
+
+  Options are given with an atom `:filter` as key and values are:
+
+  * `all` (Default)
+  * `image`
+  * `sanitizedDescription`
+  * `stats`
+  * `tags`
   """
-  def all_runes(region) do
-    rest = @endpoint <> "/runes"
+  def all_runes(region, opts \\ []) do
+    tag = Keyword.get(opts, :filter, "all")
+    rest = @endpoint <> "/runes&tags=#{tag}"
 
     HTTP.get(region: region, rest: rest)
   end
 
   @doc """
   Get information about a single rune by id.
+
+  Reger to `all_runes/2` for a list of options.
   """
   def rune(region, id) do
     rest = @endpoint <> "/runes/#{id}"
@@ -152,6 +209,29 @@ defmodule Godfist.Static do
 
   @doc """
   Get a list of all summoner spells.
+
+  Options are given with an atom `:filter` as key and values are:
+
+  * `all` (Default)
+  * `cooldown`
+  * `cooldownBurn`
+  * `cost`
+  * `costBurn`
+  * `costType`
+  * `effect`
+  * `effectBurn`
+  * `image`
+  * `key`
+  * `leveltip`
+  * `maxrank`
+  * `modes`
+  * `range`
+  * `rangeBurn`
+  * `resource`
+  * `sanitizedDescription`
+  * `sanitizedTooltip`
+  * `tooltip`
+  * `vars`
   """
   def sum_spells(region) do
     rest = @endpoint <> "/summoner-spells"

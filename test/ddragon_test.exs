@@ -27,7 +27,6 @@ defmodule DdragonTest do
     assert DataDragon.champ_square("Lee Sin") == link
   end
 
-  @tag :skip
   test "return passive link" do
     link = @endpoint <> "/#{@v}/img/passive/Anivia_P.png"
     assert DataDragon.passive("Anivia") == link
