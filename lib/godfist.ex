@@ -18,4 +18,29 @@ defmodule Godfist do
   amount: 10 # Amount of request limit, default minium is 10 each 10 seconds.
   ```
   """
+
+  alias Godfist.{Summoner}
+
+  @doc """
+  Get the id of a player by it's region and name.
+
+  Refer to `Godfist.Summoner.get_id/2`
+  """
+  def get_id(region, name) do
+    with {:missing, nil} <- Cachex.get(:id_cache, "id_#{inc(name)}"),
+         id when is_integer(id) <- Summoner.get_id(region, name) do
+      Cachex.set!(:id_cache, "id_#{inc(name)}", id)
+      id
+    else
+      {:ok, id} ->
+        id
+      {:error, reason} ->
+        reason
+    end
+  end
+
+  # Make everything 1 word, "inc" is short for inconsistency.
+  defp inc(name) do
+    String.replace(name, " ", "@")
+  end
 end

@@ -7,6 +7,8 @@ defmodule Godfist.Mixfile do
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: ["coveralls": :test, "coveralls.html": :test],
      description: description(),
      package: pkg(),
      deps: deps()]
@@ -27,7 +29,10 @@ defmodule Godfist.Mixfile do
   end
 
   def application do
-    [extra_applications: [:logger, :httpoison, :poison, :ex_rated]]
+    [
+      extra_applications: [:logger, :httpoison, :poison, :ex_rated, :cachex],
+      mod: {Godfist.Application, []}
+    ]
   end
 
   defp deps do
@@ -35,8 +40,10 @@ defmodule Godfist.Mixfile do
       {:httpoison, "~> 0.11.2"},
       {:poison, "~> 3.1"},
       {:ex_rated, "~> 1.3"},
+      {:cachex, "~> 2.1"},
       {:credo, "~> 0.7.4", only: [:dev, :test]},
-      {:ex_doc, ">= 0.0.0", only: :dev}
+      {:ex_doc, ">= 0.0.0", only: :dev},
+      {:excoveralls, "~> 0.6", only: :test}
     ]
   end
 end
