@@ -24,9 +24,29 @@ defmodule Godfist.Static do
 
   @doc """
   Get a single champion by id.
+
+  One option must be passed, otherwise "all" is returned.
+  Options are given with the `:filter` key with one of these values.
+
+  * `all`
+  * `allytips`
+  * `altimages`
+  * `blurb`
+  * `enemytips`
+  * `image`
+  * `info`
+  * `lore`
+  * `partype`
+  * `passive`
+  * `recommended`
+  * `skins`
+  * `spells`
+  * `stats`
+  * `tags`
   """
-  def champion(region, id) do
-    rest = @endpoint <> "/champions/#{id}"
+  def champion(region, id, opts \\ [filter: "all"]) do
+    filter = Keyword.get(opts, :filter)
+    rest = @endpoint <> "/champions/#{id}?champData=#{filter}"
 
     HTTP.get(region: region, rest: rest)
   end

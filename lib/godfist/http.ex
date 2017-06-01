@@ -5,21 +5,27 @@ defmodule Godfist.HTTP do
   @time Application.get_env(:godfist, :time)
   @amount Application.get_env(:godfist, :amount)
   @endpoint %{
-    br: "br1.api.riotgames.com",
-    eune: "eun1.api.riotgames.com",
-    euw: "euw1.api.riotgames.com",
-    jp: "jp1.api.riotgames.com",
-    kr: "kr.api.riotgames.com",
-    lan: "la1.api.riotgames.com",
-    las: "la2.api.riotgames.com",
-    na: "na1.api.riotgames.com",
-    oce: "oc1.api.riotgames.com",
-    tr: "tr1.api.riotgames.com",
-    ru: "ru.api.riotgames.com",
-    pbe: "pbe1.api.riotgames.com",
-    global: "global.api.riotgames.com"
+    br: "https://br1.api.riotgames.com",
+    eune: "https://eun1.api.riotgames.com",
+    euw: "https://euw1.api.riotgames.com",
+    jp: "https://jp1.api.riotgames.com",
+    kr: "https://kr.api.riotgames.com",
+    lan: "https://la1.api.riotgames.com",
+    las: "https://la2.api.riotgames.com",
+    na: "https://na1.api.riotgames.com",
+    oce: "https://oc1.api.riotgames.com",
+    tr: "https://tr1.api.riotgames.com",
+    ru: "https://ru.api.riotgames.com",
+    pbe: "https://pbe1.api.riotgames.com",
+    global: "https://global.api.riotgames.com",
+    dragon: "https://ddragon.leagueoflegends.com/cdn"
   }
 
+  def get([region: region, rest: rest]) when region == :dragon do
+    dragon = Map.get(@endpoint, :dragon)
+
+    get_body(dragon <> rest)
+  end
   def get([region: region, rest: rest]) do
     url = Map.get(@endpoint, region)
 
@@ -31,9 +37,9 @@ defmodule Godfist.HTTP do
   defp parse({:ok, _}, url, rest) do
     case String.contains?(rest, "?") do
       true ->
-        get_body("https://#{url <> rest}&api_key=#{@token}")
+        get_body("#{url <> rest}&api_key=#{@token}")
       _ ->
-        get_body("https://#{url <> rest}?api_key=#{@token}")
+        get_body("#{url <> rest}?api_key=#{@token}")
     end
   end
   defp parse({:error, _}, _, _) do
