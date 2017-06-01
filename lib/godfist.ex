@@ -28,14 +28,14 @@ defmodule Godfist do
   """
   def get_id(region, name) do
     with {:missing, nil} <- Cachex.get(:id_cache, "id_#{inc(name)}"),
-         id when is_integer(id) <- Summoner.get_id(region, name) do
+         {:ok, id} when is_integer(id) <- Summoner.get_id(region, name) do
       Cachex.set!(:id_cache, "id_#{inc(name)}", id)
-      id
+      {:ok, id}
     else
       {:ok, id} ->
-        id
+        {:ok, id}
       {:error, reason} ->
-        reason
+        {:ok, reason}
     end
   end
 

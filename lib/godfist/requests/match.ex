@@ -24,7 +24,7 @@ defmodule Godfist.Match do
   end
 
   @doc """
-  Get matchlist for a ranked games played on given account id and region
+  Get matchlist for a ranked game played for an account id and region
   filtering with a given set of options.
 
   Options are:
@@ -67,7 +67,7 @@ defmodule Godfist.Match do
   end
 
   @doc """
-  Get the last 20 match of a given player.
+  Get the last 20 matches of a given player.
 
   ## Example
 

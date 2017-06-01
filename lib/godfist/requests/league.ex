@@ -94,7 +94,7 @@ defmodule Godfist.League do
   @doc """
   Get master tier League mapped to queues.
 
-  See `challenger/2` to a list of queues.
+  See `challenger/2` for a list of queues.
 
   ## Example
 

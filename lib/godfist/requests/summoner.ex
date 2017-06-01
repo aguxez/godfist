@@ -68,8 +68,15 @@ defmodule Godfist.Summoner do
   def get_id(region, name) do
     # Get the id of the player directly by name.
     rest = @endpoint <> "/by-name/#{name}"
-    {:ok, summ} = HTTP.get(region: region, rest: rest)
 
-    summ["id"]
+    # I can probably do this in a more elegant way?
+    case HTTP.get(region: region, rest: rest) do
+      {:ok, "Not found"} ->
+        {:error, "Summoner not found"}
+      {:ok, summ} ->
+        {:ok, summ["id"]}
+      {:error, reason} ->
+        {:error, reason}
+    end
   end
 end
