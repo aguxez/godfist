@@ -37,7 +37,7 @@ defmodule Godfist.Static do
   """
   def all_champs(region, opts \\ []) do
     tags = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/champions&tags=#{tags}"
+    rest = @endpoint <> "/champions?champListData=#{tags}"
 
     HTTP.get(region: region, rest: rest)
   end
@@ -49,7 +49,7 @@ defmodule Godfist.Static do
   """
   def champion(region, id, opts \\ []) do
     filter = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/champions/#{id}?tags=#{filter}"
+    rest = @endpoint <> "/champions/#{id}?champData=#{filter}"
 
     HTTP.get(region: region, rest: rest)
   end
@@ -84,7 +84,7 @@ defmodule Godfist.Static do
   """
   def all_items(region, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/items&tags=#{tag}"
+    rest = @endpoint <> "/items?itemListData=#{tag}"
 
     HTTP.get(region: region, rest: rest)
   end
@@ -96,7 +96,7 @@ defmodule Godfist.Static do
   """
   def item(region, id, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/items/#{id}&tags=#{tag}"
+    rest = @endpoint <> "/items/#{id}?tags=#{tag}"
 
     HTTP.get(region: region, rest: rest)
   end
@@ -143,7 +143,7 @@ defmodule Godfist.Static do
   """
   def all_masteries(region, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/masteries&tags=#{tag}"
+    rest = @endpoint <> "/masteries?tags=#{tag}"
 
     HTTP.get(region: region, rest: rest)
   end
@@ -155,7 +155,7 @@ defmodule Godfist.Static do
   """
   def mastery(region, id, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/masteries/#{id}&tags=#{tag}"
+    rest = @endpoint <> "/masteries/#{id}?masteryData=#{tag}"
 
     HTTP.get(region: region, rest: rest)
   end
@@ -191,7 +191,7 @@ defmodule Godfist.Static do
   """
   def all_runes(region, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/runes&tags=#{tag}"
+    rest = @endpoint <> "/runes?runeListData=#{tag}"
 
     HTTP.get(region: region, rest: rest)
   end
@@ -201,8 +201,9 @@ defmodule Godfist.Static do
 
   Reger to `all_runes/2` for a list of options.
   """
-  def rune(region, id) do
-    rest = @endpoint <> "/runes/#{id}"
+  def rune(region, id, opts \\ []) do
+    tag = Keyword.get(opts, :filter, "all")
+    rest = @endpoint <> "/runes/#{id}?tags=#{tag}"
 
     HTTP.get(region: region, rest: rest)
   end
@@ -233,17 +234,21 @@ defmodule Godfist.Static do
   * `tooltip`
   * `vars`
   """
-  def sum_spells(region) do
-    rest = @endpoint <> "/summoner-spells"
+  def sum_spells(region, opts \\ []) do
+    tag = Keyword.get(opts, :filter, "all")
+    rest = @endpoint <> "/summoner-spells?spellListData=#{tag}&dataById=true"
 
     HTTP.get(region: region, rest: rest)
   end
 
   @doc """
   Get a single spell by id.
+
+  Refer to `sum_spells/1` for a list of options
   """
-  def spell(region, id) do
-    rest = @endpoint <> "/summoner-spells/#{id}"
+  def spell(region, id, opts \\ []) do
+    tag = Keyword.get(opts, :filter, "all")
+    rest = @endpoint <> "/summoner-spells/#{id}?spellData=#{tag}"
 
     HTTP.get(region: region, rest: rest)
   end
