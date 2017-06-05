@@ -46,22 +46,13 @@ defmodule Godfist.Match do
   """
   def matchlist(region, id, opts \\ []) do
     # This one retrieves a list of match from a given player with optional filters.
-    #
-    # Yes, I tried to get every single optional parameter from the options
-    # Yes I know it looks ugly
-    begin_time = Keyword.get(opts, :begin_time, "")
-    queue = Keyword.get(opts, :queue, "")
-    end_index = Keyword.get(opts, :end_index, "")
-    season = Keyword.get(opts, :season, "")
-    champion = Keyword.get(opts, :champion, "")
-    begin_index = Keyword.get(opts, :begin_index, "")
-    end_time = Keyword.get(opts, :end_time, "")
+    opt = Keyword.merge([], opts)
 
-    # Yes, again, I know this not so appealing.
+    # Yes, I know this not so appealing.
     rest =
-      "/lol/match/#{@v}/matchlists/by-account/#{id}?beginTime=#{begin_time}&" <>
-      "queue=#{queue}&endIndex=#{end_index}&season=#{season}&champion=#{champion}&" <>
-      "beginIndex=#{begin_index}&endTime=#{end_time}"
+      "/lol/match/#{@v}/matchlists/by-account/#{id}?beginTime=#{opt[:begin_time]}&" <>
+      "queue=#{opt[:queue]}&endIndex=#{opt[:end_index]}&season=#{opt[:season]}&" <>
+      "champion=#{opt[:champion]}&beginIndex=#{opt[:begin_index]}&endTime=#{opt[:end_time]}"
 
     HTTP.get(region: region, rest: rest)
   end
