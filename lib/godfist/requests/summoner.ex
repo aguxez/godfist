@@ -57,7 +57,7 @@ defmodule Godfist.Summoner do
   end
 
   @doc """
-  Get the id of a player directly by name.
+  Get the account id of a player directly by name.
 
   ## Example
 
@@ -74,7 +74,7 @@ defmodule Godfist.Summoner do
       {:ok, "Not found"} ->
         {:error, "Summoner not found"}
       {:ok, summ} ->
-        {:ok, summ["id"]}
+        {:ok, summ["accountId"]}
       {:error, reason} ->
         {:error, reason}
     end
