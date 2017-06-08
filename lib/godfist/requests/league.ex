@@ -26,6 +26,7 @@ defmodule Godfist.League do
   iex> Godfist.League.get_all(:lan, [123, 456, 789])
   ```
   """
+  @spec get_all(atom, integer) :: {:ok, map} | {:error, String.t}
   def get_all(region, sumid) when is_list(sumid) do
     ids = Enum.join(sumid, ",")
     server = Atom.to_string(region)
@@ -53,6 +54,7 @@ defmodule Godfist.League do
   iex> Godfist.League.get_entry(:lan, [123, 456, 789])
   ```
   """
+  @spec get_entry(atom, list) :: {:ok, map} | {:error, String.t}
   def get_entry(region, sumid) when is_list(sumid) do
     ids = Enum.join(sumid, ",")
     server = Atom.to_string(region)
@@ -82,6 +84,7 @@ defmodule Godfist.League do
   iex> Godfist.League.challenger(:oce, :team_3)
   ```
   """
+  @spec challenger(atom, Keyword.t) :: {:ok, map} | {:error, String.t}
   def challenger(region, rank_queue) do
     queue = Map.get(@queues, rank_queue)
     server = Atom.to_string(region)
@@ -102,6 +105,7 @@ defmodule Godfist.League do
   iex> Godfist.League.master(:eune, :flex_sr)
   ```
   """
+  @spec master(atom, Keyword.t) :: {:ok, map} | {:error, String.t}
   def master(region, rank_queue) do
     queue = Map.get(@queues, rank_queue)
     server = Atom.to_string(region)

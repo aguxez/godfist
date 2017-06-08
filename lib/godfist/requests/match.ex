@@ -16,6 +16,7 @@ defmodule Godfist.Match do
   iex> Godfist.Match.get_match(:oce, matchid)
   ```
   """
+  @spec get_match(atom, integer) :: {:ok, map} | {:error, String.t}
   def get_match(region, matchid) do
     # This function gets a specific information about a match.
     rest = "/lol/match/#{@v}/matches/#{matchid}"
@@ -44,6 +45,7 @@ defmodule Godfist.Match do
   iex> Godfist.Match.matchlist(:lan, summid, [champion: 64, queue: 420])
   ```
   """
+  @spec matchlist(atom, integer, Keyword.t) :: {:ok, map} | {:error, String.t}
   def matchlist(region, id, opts \\ []) do
     # This one retrieves a list of match from a given player with optional filters.
     opt = Keyword.merge([], opts)
@@ -66,6 +68,7 @@ defmodule Godfist.Match do
   iex> Godfist.Match.recent(:lan, summid)
   ```
   """
+  @spec recent(atom, integer) :: {:ok, map} | {:error, String.t}
   def recent(region, id) do
     rest = "/lol/match/#{@v}/matchlists/by-account/#{id}/recent"
 
@@ -81,6 +84,7 @@ defmodule Godfist.Match do
   Godfist.Match.timeline(:na, matchid)
   ```
   """
+  @spec timeline(atom, integer) :: {:ok, map} | {:error, String.t}
   def timeline(region, id) do
     rest = "/lol/match/#{@v}/timelines/by-match/#{id}"
 
@@ -96,6 +100,7 @@ defmodule Godfist.Match do
   iex> Godfist.Match.tournament_by_code(:oce, tournament_id)
   ```
   """
+  @spec tournament_by_code(atom, integer) :: {:ok, map} | {:error, String.t}
   def tournament_by_code(region, tournament_id) do
     # Have in mind that if you don't have permissions to fetch this api
     # it will most likely return a 404. You can't use this one with a development
@@ -117,6 +122,7 @@ defmodule Godfist.Match do
   iex> Godfist.Match.tournament_by_match(:euw, matchid, tournament_id)
   ```
   """
+  @spec tournament_by_match(atom, integer, integer) :: {:ok, map} | {:error, String.t}
   def tournament_by_match(region, match_id, tournament_id) do
     rest = "/lol/match/#{@v}/matches/#{match_id}/by-tournament-code/#{tournament_id}"
 

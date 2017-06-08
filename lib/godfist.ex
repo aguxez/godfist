@@ -26,7 +26,7 @@ defmodule Godfist do
 
   Refer to `Godfist.Summoner.get_id/2`
   """
-  @spec get_account_id(atom, String.t) :: {:ok, id} | {:error, reason}
+  @spec get_account_id(atom, String.t) :: {:ok, integer} | {:error, String.t}
   def get_account_id(region, name) do
     with {:missing, nil} <- Cachex.get(:id_cache, "id_#{inc(name)}"),
          {:ok, id} when is_integer(id) <- Summoner.get_id(region, name) do
@@ -49,7 +49,7 @@ defmodule Godfist do
   iex> Godfist.get_summid(:lan, "SummonerName")
   ```
   """
-  @spec get_summid(atom, String.t) :: {:ok, summid} | {:error, reason}
+  @spec get_summid(atom, String.t) :: {:ok, integer} | {:error, String.t}
   def get_summid(region, name) do
     with {:missing, nil} <- Cachex.get(:summid_cache, "summid_#{inc(name)}") do
       {:ok, %{"id" => summid}} = Godfist.Summoner.by_name(region, name)
@@ -71,7 +71,7 @@ defmodule Godfist do
   @doc """
   Get matchlist of a player by it's region and name.
 
-  Same as `Godfist.Match.matchlist/2` (Check for a list of options)
+  Same as `Godfist.Match.matchlist/3` (Check for a list of options)
   but you don't have to provide the summoner id directly.
 
   ## Example
@@ -80,7 +80,7 @@ defmodule Godfist do
   iex> Godfist.matchlist(:lan, "SummonerName")
   ```
   """
-  @spec matchlist(atom, String.t, Keyword.t) :: {:ok, matches} | {:error, reason}
+  @spec matchlist(atom, String.t, Keyword.t) :: {:ok, map} | {:error, String.t}
   def matchlist(region, name, opts \\ []) do
     with {:ok, account_id} <- Godfist.get_account_id(region, name),
          {:ok, matches} <- Godfist.Match.matchlist(region, account_id, opts) do
@@ -100,12 +100,41 @@ defmodule Godfist do
   iex> Godfist.active_game(:na, "Summoner name")
   ```
   """
-  @spec active_game(atom, String.t) :: {:ok, match} | {:error, reason}
+  @spec active_game(atom, String.t) :: {:ok, map} | {:error, String.t}
   def active_game(region, name) do
     with {:ok, id} <- Godfist.get_summid(region, name),
          {:ok, match} <- Godfist.Spectator.active_game(region, id) do
       {:ok, match}
     else
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  @doc """
+  Get all champs.
+
+  Refer to `Godfist.Champion.all/2` for option.
+  """
+  @spec all_champs(atom, Keyword.t) :: {:ok, map} | {:error, String.t}
+  def all_champs(region, opts \\ []) do
+    Godfist.Champion.all(region, opts)
+  end
+
+  @doc """
+  Get a specific champion by id.
+
+  Refer to `Godfist.Champion.by_id/2`
+  """
+  @spec champion(atom, integer) :: {:ok, map} | {:error, String.t}
+  def champion(region, id) do
+    with {:missing, nil} <- Cachex.get(:champion, "champ_#{id}"),
+         {:ok, champ} <- Godfist.Champion.by_id(region, id) do
+      Cachex.set!(:champion, "champ_#{id}", champ)
+      {:ok, champ}
+    else
+      {:ok, champ} ->
+        {:ok, champ}
       {:error, reason} ->
         {:error, reason}
     end

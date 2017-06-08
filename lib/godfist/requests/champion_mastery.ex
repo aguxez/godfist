@@ -16,6 +16,7 @@ defmodule Godfist.ChampionMastery do
   iex> Godfist.ChampionMastery.by_summoner(:na, summonerid)
   ```
   """
+  @spec by_summoner(atom, integer) :: {:ok, map} | {:error, String.t}
   def by_summoner(region, id) do
     rest = @endpoint <> "/champion-masteries/by-summoner/#{id}"
 
@@ -31,6 +32,7 @@ defmodule Godfist.ChampionMastery do
   iex> Godfist.ChampionMastery.by_champion(:na, summid, champid)
   ```
   """
+  @spec by_champion(atom, integer, integer) :: {:ok, map} | {:error, String.t}
   def by_champion(region, id, champ_id) do
     rest = @endpoint <> "/champion-masteries/by-summoner/#{id}/by-champion/#{champ_id}"
 
@@ -46,6 +48,7 @@ defmodule Godfist.ChampionMastery do
   iex> Godfist.ChampionMastery.total(:lan, summid)
   ```
   """
+  @spec total(atom, integer) :: {:ok, map} | {:error, String.t}
   def total(region, id) do
     rest = @endpoint <> "/scores/by-summoner/#{id}"
 
