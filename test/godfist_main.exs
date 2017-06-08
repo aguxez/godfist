@@ -18,4 +18,12 @@ defmodule Godfist.Main do
 
   # Can't test active game right now because of it would fail if there is not an
   # active match.
+
+  test "champion tests" do
+    {:ok, all_champs} = Godfist.all_champs(:na, ftp: true)
+    {:ok, champ} = Godfist.champion(:ru, 64)
+
+    assert is_map(all_champs) == true
+    assert is_map(champ) == true
+  end
 end
