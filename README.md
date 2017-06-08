@@ -11,8 +11,10 @@ First include `godfist` in your `mix.exs` and add it to your applications.
 ```elixir
 [extra_applications: :godfist, ...]
 ...
-{:godfist, "~> 0.2.0"}
+{:godfist, "~> 0.2.1"}
 ```
+
+You can use `{:godfist, github: "aguxez/godfist"}` for the development version.
 
 ## Usage
 Remember to set your api key on your `config.exs` with the next params.
