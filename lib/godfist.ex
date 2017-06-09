@@ -139,4 +139,40 @@ defmodule Godfist do
         {:error, reason}
     end
   end
+
+  @doc """
+  Get a specific champion it's name. This is useful to work with the `Godfist.DataDragon` endpoints.
+
+  ## Example
+
+  ```elixir
+  iex> Godfist.champion_by_name(:oce, "Lee Sin")
+  ```
+  """
+  @spec champion_by_name(String.t) :: {String.t, map} | {:error, String.t}
+  def champion_by_name(name) do
+    case Cachex.get(:champ_name, "champ_name_#{name}") do
+      {:missing, nil} ->
+        {:ok, champs} = Godfist.DataDragon.Data.champions()
+
+        map =
+          champs["data"]
+          |> Stream.map(&(&1))
+          |> Enum.to_list
+          |> Enum.find(fn{_k, v} -> v["name"] == name end)
+
+
+        Cachex.set!(:champ_name, "champ_name_#{name}", map)
+
+        # I'm just destructuring the tuple into two variables here, that's the
+        # value to return.
+        {name, map} = map
+        {name, map}
+      {:ok, map} ->
+        {name, map} = map
+        {name, map}
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
 end

@@ -22,8 +22,10 @@ defmodule Godfist.Main do
   test "champion tests" do
     {:ok, all_champs} = Godfist.all_champs(:na, ftp: true)
     {:ok, champ} = Godfist.champion(:ru, 64)
+    {name, _map} = Godfist.champion_by_name("Kha'Zix")
 
     assert is_map(all_champs) == true
     assert is_map(champ) == true
+    assert name == "Khazix"
   end
 end
