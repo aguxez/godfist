@@ -63,11 +63,6 @@ defmodule Godfist do
     end
   end
 
-  # Make everything 1 word, "inc" is short for inconsistency.
-  defp inc(name) do
-    String.replace(name, " ", "@")
-  end
-
   @doc """
   Get matchlist of a player by it's region and name.
 
@@ -146,14 +141,24 @@ defmodule Godfist do
   ## Example
 
   ```elixir
-  iex> Godfist.champion_by_name(:oce, "Lee Sin")
+  iex> Godfist.champion_by_name("Lee Sin", :japanese)
+  iex> Godfist.champion_by_name(["Lee Sin", "Rek'Sai", "Nocturne"])
   ```
   """
-  @spec champion_by_name(String.t) :: {String.t, map} | {:error, String.t}
-  def champion_by_name(name) do
-    case Cachex.get(:champ_name, "champ_name_#{name}") do
+  def champion_by_name(champions, locale \\ :us)
+
+  @spec champion_by_name(list, atom) :: list | MatchError
+  def champion_by_name(champions, locale) when is_list(champions) do
+    champions
+    |> Stream.map(fn champs -> champion_by_name(champs, locale) end)
+    |> Enum.to_list
+  end
+
+  @spec champion_by_name(String.t, atom) :: {String.t, map} | MatchError
+  def champion_by_name(name, locale) do
+    case Cachex.get(:champ_name, "champ_#{inc(name)}_#{locale}") do
       {:missing, nil} ->
-        {:ok, champs} = Godfist.DataDragon.Data.champions()
+        {:ok, champs} = Godfist.DataDragon.Data.champions(locale)
 
         map =
           champs["data"]
@@ -162,7 +167,7 @@ defmodule Godfist do
           |> Enum.find(fn{_k, v} -> v["name"] == name end)
 
 
-        Cachex.set!(:champ_name, "champ_name_#{name}", map)
+        Cachex.set!(:champ_name, "champ_#{inc(name)}_#{locale}", map)
 
         # I'm just destructuring the tuple into two variables here, that's the
         # value to return.
@@ -174,5 +179,10 @@ defmodule Godfist do
       {:error, reason} ->
         {:error, reason}
     end
+  end
+
+    # Make everything 1 word, "inc" is short for inconsistency.
+  defp inc(name) do
+    String.replace(name, " ", "@")
   end
 end
