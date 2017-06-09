@@ -37,7 +37,7 @@ defmodule Godfist.DataDragon do
   """
   @spec champ_splash(String.t, integer) :: String.t
   def champ_splash(name, number) do
-    @endpoint <> "/img/champion/splash/#{replace(name)}_#{number}.jpg"
+    @endpoint <> "/img/champion/splash/#{get_name(name)}_#{number}.jpg"
   end
 
   @doc """
@@ -50,7 +50,7 @@ defmodule Godfist.DataDragon do
   """
   @spec champ_loading(String.t, integer) :: String.t
   def champ_loading(name, number) do
-    @endpoint <> "/img/champion/loading/#{replace(name)}_#{number}.jpg"
+    @endpoint <> "/img/champion/loading/#{get_name(name)}_#{number}.jpg"
   end
 
   @doc """
@@ -63,7 +63,7 @@ defmodule Godfist.DataDragon do
   """
   @spec champ_square(String.t) :: String.t
   def champ_square(name) do
-    @endpoint <> "/#{@v}/img/champion/#{replace(name)}.png"
+    @endpoint <> "/#{@v}/img/champion/#{get_name(name)}.png"
   end
 
   @doc """
@@ -82,8 +82,8 @@ defmodule Godfist.DataDragon do
   """
   @spec passive(String.t) :: String.t
   def passive(name) do
-    {:ok, champ} = Data.single_champ(replace(name))
-    {:ok, data} = Static.champion(:oce, champ["data"][replace(name)]["key"], filter: "passive")
+    {:ok, champ} = Data.single_champ(get_name(name))
+    {:ok, data} = Static.champion(:oce, champ["data"][get_name(name)]["key"], filter: "passive")
     data = data["passive"]["image"]["full"]
 
     @endpoint <> "/#{@v}/img/passive/#{data}"
@@ -161,10 +161,9 @@ defmodule Godfist.DataDragon do
     @endpoint <> "/#{@v}/img/rune/#{id}.png"
   end
 
-  # Priv for replacing champion names.
-  defp replace(url) do
-    url
-    |> String.replace(" ", "")
-    |> String.replace("'", "")
+  # Get champion Data Dragon champion name from in-game champion name.
+  defp get_name(champion) do
+    {name, _map} = Godfist.champion_by_name(champion)
+    name
   end
 end

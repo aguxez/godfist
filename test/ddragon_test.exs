@@ -14,7 +14,7 @@ defmodule DdragonTest do
 
   test "return champ splash art" do
     link = @endpoint <> "/img/champion/splash/Khazix_1.jpg"
-    assert DataDragon.champ_splash("Kha'zix", 1) == link
+    assert DataDragon.champ_splash("Kha'Zix", 1) == link
   end
 
   test "return champ loading splash" do
