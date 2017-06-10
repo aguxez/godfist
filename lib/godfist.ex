@@ -141,7 +141,7 @@ defmodule Godfist do
   ## Example
 
   ```elixir
-  iex> Godfist.champion_by_name("Lee Sin", :japanese)
+  iex> Godfist.champion_by_name("リー・シン", :japanese)
   iex> Godfist.champion_by_name(["Lee Sin", "Rek'Sai", "Nocturne"])
   ```
   """
@@ -181,8 +181,39 @@ defmodule Godfist do
     end
   end
 
-    # Make everything 1 word, "inc" is short for inconsistency.
+
+  @doc """
+  Find similar champs to the query.
+
+  ## Example
+
+  ```elixir
+  iex> Godfist.find_similar("Noc", :us)
+  ```
+  """
+  @spec find_similar(String.t, atom) :: list | {:error, Strint.t}
+  def find_similar(name, locale \\ :us) do
+    with {:missing, nil} <- Cachex.get(:all_champs, "all_champs"),
+         {:ok, %{"data" => map}} <- Godfist.DataDragon.Data.champions(locale) do
+      Cachex.set!(:all_champs, "all_champs", map)
+
+      find_champs(map, name)
+    else
+      {:ok, map} ->
+        find_champs(map, name)
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+
+  # Make everything 1 word, "inc" is short for inconsistency.
   defp inc(name) do
     String.replace(name, " ", "@")
+  end
+
+  # Map trough the champ list and filter the ones that are similar to the name given.
+  defp find_champs(champ_list, name) do
+    Enum.filter_map champ_list, fn{_k, v} -> String.contains?(v["name"], name) end, &(&1)
   end
 end
