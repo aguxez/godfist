@@ -28,4 +28,13 @@ defmodule Godfist.Main do
     assert is_map(champ) == true
     assert name == "Khazix"
   end
+
+  test "return champs with similar name to the query" do
+    similars =
+      "Ta"
+      |> Godfist.find_similar
+      |> Enum.map(fn{k, _v} -> k end)
+
+    assert similars == ["Talon", "TahmKench", "Taric", "Taliyah"]
+  end
 end

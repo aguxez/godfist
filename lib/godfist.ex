@@ -19,7 +19,7 @@ defmodule Godfist do
   ```
   """
 
-  alias Godfist.{Summoner}
+  alias Godfist.{Summoner, Match, Spectator, Champion, DataDragon}
 
   @doc """
   Get the account id of a player by it's region and name.
@@ -51,11 +51,11 @@ defmodule Godfist do
   """
   @spec get_summid(atom, String.t) :: {:ok, integer} | {:error, String.t}
   def get_summid(region, name) do
-    with {:missing, nil} <- Cachex.get(:summid_cache, "summid_#{inc(name)}") do
-      {:ok, %{"id" => summid}} = Godfist.Summoner.by_name(region, name)
-      Cachex.set!(:summid_cache, "summid_#{inc(name)}", summid)
-      {:ok, summid}
-    else
+    case Cachex.get(:summid_cache, "summid_#{inc(name)}") do
+      {:missing, nil} ->
+        {:ok, %{"id" => summid}} = Summoner.by_name(region, name)
+        Cachex.set!(:summid_cache, "summid_#{inc(name)}", summid)
+        {:ok, summid}
       {:ok, summid} ->
         {:ok, summid}
       {:error, reason} ->
@@ -77,8 +77,8 @@ defmodule Godfist do
   """
   @spec matchlist(atom, String.t, Keyword.t) :: {:ok, map} | {:error, String.t}
   def matchlist(region, name, opts \\ []) do
-    with {:ok, account_id} <- Godfist.get_account_id(region, name),
-         {:ok, matches} <- Godfist.Match.matchlist(region, account_id, opts) do
+    with {:ok, account_id} <- get_account_id(region, name),
+         {:ok, matches} <- Match.matchlist(region, account_id, opts) do
       {:ok, matches}
     else
       {:error, reason} ->
@@ -97,8 +97,8 @@ defmodule Godfist do
   """
   @spec active_game(atom, String.t) :: {:ok, map} | {:error, String.t}
   def active_game(region, name) do
-    with {:ok, id} <- Godfist.get_summid(region, name),
-         {:ok, match} <- Godfist.Spectator.active_game(region, id) do
+    with {:ok, id} <- get_summid(region, name),
+         {:ok, match} <- Spectator.active_game(region, id) do
       {:ok, match}
     else
       {:error, reason} ->
@@ -113,7 +113,7 @@ defmodule Godfist do
   """
   @spec all_champs(atom, Keyword.t) :: {:ok, map} | {:error, String.t}
   def all_champs(region, opts \\ []) do
-    Godfist.Champion.all(region, opts)
+    Champion.all(region, opts)
   end
 
   @doc """
@@ -124,7 +124,7 @@ defmodule Godfist do
   @spec champion(atom, integer) :: {:ok, map} | {:error, String.t}
   def champion(region, id) do
     with {:missing, nil} <- Cachex.get(:champion, "champ_#{id}"),
-         {:ok, champ} <- Godfist.Champion.by_id(region, id) do
+         {:ok, champ} <- Champion.by_id(region, id) do
       Cachex.set!(:champion, "champ_#{id}", champ)
       {:ok, champ}
     else
@@ -156,31 +156,34 @@ defmodule Godfist do
 
   @spec champion_by_name(String.t, atom) :: {String.t, map} | MatchError
   def champion_by_name(name, locale) do
-    case Cachex.get(:champ_name, "champ_#{inc(name)}_#{locale}") do
+    case Cachex.get(:all_champs, "all_champs") do
       {:missing, nil} ->
-        {:ok, champs} = Godfist.DataDragon.Data.champions(locale)
+        {:ok, champs} = DataDragon.Data.champions(locale)
 
-        map =
-          champs["data"]
-          |> Stream.map(&(&1))
-          |> Enum.to_list
-          |> Enum.find(fn{_k, v} -> v["name"] == name end)
+        Cachex.set!(:all_champs, "all_champs", champs)
 
-
-        Cachex.set!(:champ_name, "champ_#{inc(name)}_#{locale}", map)
-
-        # I'm just destructuring the tuple into two variables here, that's the
-        # value to return.
-        {name, map} = map
-        {name, map}
-      {:ok, map} ->
-        {name, map} = map
-        {name, map}
+        find_single_champ(champs, name)
+      {:ok, list} ->
+        find_single_champ(list, name)
       {:error, reason} ->
         {:error, reason}
     end
   end
 
+  # Make everything 1 word, "inc" is short for inconsistency.
+  defp inc(name),
+    do: String.replace(name, " ", "@")
+
+  defp find_single_champ(list, name) do
+    map =
+      list["data"]
+      |> Stream.map(&(&1))
+      |> Enum.to_list
+      |> Enum.find(fn{_k, v} -> v["name"] == name end)
+
+    {champ_name, map} = map
+    {champ_name, map}
+  end
 
   @doc """
   Find similar champs to the query.
@@ -189,31 +192,25 @@ defmodule Godfist do
 
   ```elixir
   iex> Godfist.find_similar("Noc", :us)
+  iex> Godfist.find_similar("L")
   ```
   """
-  @spec find_similar(String.t, atom) :: list | {:error, Strint.t}
+  @spec find_similar(String.t, atom) :: list | {:error, String.t}
   def find_similar(name, locale \\ :us) do
     with {:missing, nil} <- Cachex.get(:all_champs, "all_champs"),
-         {:ok, %{"data" => map}} <- Godfist.DataDragon.Data.champions(locale) do
+         {:ok, %{"data" => map}} <- DataDragon.Data.champions(locale) do
       Cachex.set!(:all_champs, "all_champs", map)
 
       find_champs(map, name)
     else
-      {:ok, map} ->
-        find_champs(map, name)
+      {:ok, list} ->
+        find_champs(list, name)
       {:error, reason} ->
         {:error, reason}
     end
   end
 
-
-  # Make everything 1 word, "inc" is short for inconsistency.
-  defp inc(name) do
-    String.replace(name, " ", "@")
-  end
-
   # Map trough the champ list and filter the ones that are similar to the name given.
-  defp find_champs(champ_list, name) do
-    Enum.filter_map champ_list, fn{_k, v} -> String.contains?(v["name"], name) end, &(&1)
-  end
+  defp find_champs(champ_list, name), do:
+    Enum.filter_map(champ_list["data"], fn{_k, v} -> String.contains?(v["name"], name) end, &(&1))
 end

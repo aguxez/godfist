@@ -51,11 +51,12 @@ defmodule Godfist.HTTP do
   defp get_body(url) do
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
-        {:ok, Poison.decode!(body)}
+        {:ok, response} = Poison.decode(body)
+        {:ok, response}
       {:ok, %{status_code: 404}} ->
         {:error, "Not found"}
       {:error, reason} ->
-        reason
+        {:error, reason}
     end
   end
 end
