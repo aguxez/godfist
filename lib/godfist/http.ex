@@ -1,9 +1,6 @@
 defmodule Godfist.HTTP do
   @moduledoc false
 
-  @token Application.get_env(:godfist, :token, System.get_env("RIOT_TOKEN"))
-  @time Application.get_env(:godfist, :time)
-  @amount Application.get_env(:godfist, :amount)
   @endpoint %{
     br: "https://br1.api.riotgames.com",
     eune: "https://eun1.api.riotgames.com",
@@ -30,16 +27,16 @@ defmodule Godfist.HTTP do
     url = Map.get(@endpoint, region)
 
     region
-    |> ExRated.check_rate(@time, @amount)
+    |> ExRated.check_rate(time, amount)
     |> parse(url, rest)
   end
 
   defp parse({:ok, _}, url, rest) do
     case String.contains?(rest, "?") do
       true ->
-        get_body("#{url <> rest}&api_key=#{@token}")
+        get_body("#{url <> rest}&api_key=#{token}")
       _ ->
-        get_body("#{url <> rest}?api_key=#{@token}")
+        get_body("#{url <> rest}?api_key=#{token}")
     end
   end
   defp parse({:error, _}, _, _) do
@@ -58,5 +55,17 @@ defmodule Godfist.HTTP do
       {:error, reason} ->
         {:error, reason}
     end
+  end
+
+  defp token do
+    Application.get_env(:godfist, :token, System.get_env("RIOT_TOKEN"))
+  end
+
+  defp time do
+    Application.get_env(:godfist, :time)
+  end
+
+  defp amount do
+    Application.get_env(:godfist, :amount)
   end
 end
