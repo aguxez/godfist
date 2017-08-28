@@ -27,7 +27,7 @@ Remember to set your api key on your `config.exs` with the next params.
 config :godfist,
 token: "YOUR API KEY",
 time: 1000, # This is the minimum default from Riot, set this time in miliseconds.
-amount: 10 # Amount of request limit, default minimum is 10 each 10 seconds.
+amount: 20 # Amount of request limit, default minimum is 20 each second for development.
 ```
 
 Or export the api key as "RIOT_TOKEN": `export RIOT_TOKEN="token"`
