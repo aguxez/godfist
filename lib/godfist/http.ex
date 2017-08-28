@@ -27,16 +27,16 @@ defmodule Godfist.HTTP do
     url = Map.get(@endpoint, region)
 
     region
-    |> ExRated.check_rate(time, amount)
+    |> ExRated.check_rate(time(), amount())
     |> parse(url, rest)
   end
 
   defp parse({:ok, _}, url, rest) do
     case String.contains?(rest, "?") do
       true ->
-        get_body("#{url <> rest}&api_key=#{token}")
+        get_body("#{url <> rest}&api_key=#{token()}")
       _ ->
-        get_body("#{url <> rest}?api_key=#{token}")
+        get_body("#{url <> rest}?api_key=#{token()}")
     end
   end
   defp parse({:error, _}, _, _) do
