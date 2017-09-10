@@ -50,8 +50,14 @@ defmodule Godfist.HTTP do
       {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
         {:ok, response} = Poison.decode(body)
         {:ok, response}
+      {:ok, %{status_code: 403}} ->
+        {:error, "Forbidden. Check your API Key."}
       {:ok, %{status_code: 404}} ->
         {:error, "Not found"}
+      {:ok, %{status_code: 415}} ->
+        {:error, "Unsupported media type. Check the Content-Type header."}
+      {:ok, %{status_code: 429}} ->
+        {:error, "Rate limit exceeded."}
       {:error, reason} ->
         {:error, reason}
     end
