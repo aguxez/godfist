@@ -40,8 +40,6 @@ defmodule Godfist.HTTP do
     end
   end
   defp parse({:error, _}, _, _) do
-    Process.sleep(5000)
-
     {:error, "Rate limit hit, let's slow down"}
   end
 
