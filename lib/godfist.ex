@@ -170,7 +170,7 @@ defmodule Godfist do
     end
   end
 
-  # Make everything 1 word, "inc" is short for inconsistency.
+  # Makes everything 1 word, "inc" is short for inconsistency.
   defp inc(name),
     do: String.replace(name, " ", "@")
 
@@ -212,5 +212,7 @@ defmodule Godfist do
 
   # Map trough the champ list and filter the ones that are similar to the name given.
   defp find_champs(champ_list, name), do:
-    Enum.filter_map(champ_list["data"], fn{_k, v} -> String.contains?(v["name"], name) end, &(&1))
+    champ_list
+    |> Enum.filter(fn{_k, v} -> String.contains?(v["name"], name) end)
+    |> Enum.map(&(&1))
 end
