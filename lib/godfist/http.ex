@@ -40,8 +40,6 @@ defmodule Godfist.HTTP do
     end
   end
   defp parse({:error, _}, _, _) do
-    Process.sleep(5000)
-
     {:error, "Rate limit hit, let's slow down"}
   end
 
@@ -57,7 +55,7 @@ defmodule Godfist.HTTP do
       {:ok, %{status_code: 415}} ->
         {:error, "Unsupported media type. Check the Content-Type header."}
       {:ok, %{status_code: 429}} ->
-        {:error, "Rate limit exceeded."}
+        {:error, "Rate eimit exceeded."}
       {:error, reason} ->
         {:error, reason}
     end
