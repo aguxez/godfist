@@ -55,7 +55,7 @@ defmodule Godfist.HTTP do
       {:ok, %{status_code: 415}} ->
         {:error, "Unsupported media type. Check the Content-Type header."}
       {:ok, %{status_code: 429}} ->
-        {:error, "Rate eimit exceeded."}
+        {:error, "Rate limit exceeded."}
       {:error, reason} ->
         {:error, reason}
     end
