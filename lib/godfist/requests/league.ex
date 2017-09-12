@@ -63,7 +63,7 @@ defmodule Godfist.League do
   ```elixir
   iex> Godfist.League.challenger(:na, :solo_5)
 
-  iex> Godfist.League.challenger(:oce, :team_3)
+  iex> Godfist.League.challenger(:oce, :flex_tt)
   ```
   """
   @spec challenger(atom, atom) :: {:ok, map} | {:error, String.t}

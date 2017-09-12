@@ -35,7 +35,8 @@ defmodule Godfist.LeagueRates do
     do: GenServer.start_link(__MODULE__, %{}, name: :league_limit)
 
   def handle_rate(region, rest, endpoint \\ nil) do
-    GenServer.call(:league_limit, {:handle_rate, region, rest, endpoint}, 7000)
+    GenServer.call(:league_limit, {:handle_rate, region, rest, endpoint},
+                   :infinity)
   end
 
   # Server

@@ -27,32 +27,42 @@ defmodule Godfist.HTTP do
   def get(region, rest, opt) do
     url = Map.get(@endpoint, region)
 
-    if Mix.env() == :prod do
-      # Enforcing the time and amount of requests per method if
-      # opts provided
-      opt_time = Keyword.get(opt, :time)
-      opt_amount = Keyword.get(opt, :amount)
-
-      region
-      |> ExRated.check_rate(opt_time, opt_amount)
-      |> parse(url, rest)
+    # To ensure limit on dev keys.
+    with :dev <- rates(),
+        {{:ok, _}, {:ok, _}} <- check_exrated_limits(region) do
+      parse(url, rest)
     else
-      region
-      |> ExRated.check_rate(time(), amount())
-      |> parse(url, rest)
+      :prod ->
+        # Enforcing the time and amount of requests per method if
+        # opts provided
+        opt_time = Keyword.get(opt, :time)
+        opt_amount = Keyword.get(opt, :amount)
+
+        region
+        |> ExRated.check_rate(opt_time, opt_amount)
+        |> parse(url, rest)
+      _ ->
+        {:error, "Rate limit hit"}
     end
   end
 
-  defp parse({:ok, _}, url, rest) do
+  # Returns tuple to check limits on ExRated for dev keys.
+  defp check_exrated_limits(region) do
+    {
+      ExRated.check_rate("#{region}-1", 20, 1000),
+      ExRated.check_rate("#{region}-2", 100, 120_000)
+    }
+  end
+
+  defp parse({:ok, _}, url, rest), do: parse(url, rest)
+  defp parse({:error, _}, _, _), do: {:error, "Rate limit hit"}
+  defp parse(url, rest) do
     case String.contains?(rest, "?") do
       true ->
         get_body("#{url <> rest}&api_key=#{token()}")
       _ ->
         get_body("#{url <> rest}?api_key=#{token()}")
     end
-  end
-  defp parse({:error, _}, _, _) do
-    {:error, "Rate limit hit, let's slow down"}
   end
 
   defp get_body(url) do
@@ -77,13 +87,7 @@ defmodule Godfist.HTTP do
     Application.get_env(:godfist, :token, System.get_env("RIOT_TOKEN"))
   end
 
-  # These are global definitions, rate-limits by endpoints are forced
-  # individually in each method.
-  defp time do
-    Application.get_env(:godfist, :time)
-  end
-
-  defp amount do
-    Application.get_env(:godfist, :amount)
-  end
+  # Gets the value of :rates to work appropriately for the rate limit.
+  defp rates,
+    do: Application.get_env(:godfist, :rates)
 end
