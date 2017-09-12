@@ -3,7 +3,7 @@ defmodule Godfist.Spectator do
   Module to interact with the Spectator endpoint.
   """
 
-  alias Godfist.HTTP
+  alias Godfist.LeagueRates
 
   @endpoint "/lol/spectator/v3"
 
@@ -20,7 +20,7 @@ defmodule Godfist.Spectator do
   def active_game(region, sumid) do
     rest = @endpoint <> "/active-games/by-summoner/#{sumid}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :other)
   end
 
   @doc """
@@ -36,6 +36,6 @@ defmodule Godfist.Spectator do
   def featured_games(region) do
     rest = @endpoint <> "/featured-games"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :other)
   end
 end

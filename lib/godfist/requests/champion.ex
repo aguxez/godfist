@@ -3,7 +3,7 @@ defmodule Godfist.Champion do
   Module to interact with the Champions endpoint
   """
 
-  alias Godfist.HTTP
+  alias Godfist.LeagueRates
 
   @endpoint "/lol/platform/v3/champions/"
 
@@ -24,7 +24,7 @@ defmodule Godfist.Champion do
     free_to_play = Keyword.get(opts, :ftp, false)
     rest = @endpoint <> "?freeToPlay=#{free_to_play}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :champion_masteries_runes)
   end
 
   @doc """
@@ -39,6 +39,6 @@ defmodule Godfist.Champion do
   def by_id(region, id) do
     rest = @endpoint <> "#{id}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :champion_masteries_runes)
   end
 end

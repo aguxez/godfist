@@ -3,78 +3,60 @@ defmodule Godfist.League do
   Module to interact with the League endpoint.
   """
 
-  alias Godfist.HTTP
+  alias Godfist.LeagueRates
 
-  @v "v2.5"
+  @v "v3"
 
   @queues %{
     flex_sr: "RANKED_FLEX_SR",
     flex_tt: "RANKED_FLEX_TT",
-    solo_5: "RANKED_SOLO_5x5",
-    team_3: "RANKED_TEAM_3x3",
-    team_5: "RANKED_TEAM_5x5"
+    solo_5: "RANKED_SOLO_5x5"
   }
 
   @doc """
-  Get a list of the players from a league of the given list of summoner ids.
+  Get a list of the players from a league of the given Summoner id.
 
   ## Example
 
   ```elixir
   iex> Godfist.League.get_all(:lan, 123)
-
-  iex> Godfist.League.get_all(:lan, [123, 456, 789])
   ```
   """
   @spec get_all(atom, integer) :: {:ok, map} | {:error, String.t}
-  def get_all(region, sumid) when is_list(sumid) do
-    ids = Enum.join(sumid, ",")
-    server = Atom.to_string(region)
-
-    rest = "/api/lol/#{server}/#{@v}/league/by-summoner/#{ids}"
-
-    HTTP.get(region: region, rest: rest)
-  end
   def get_all(region, sumid) do
-    server = Atom.to_string(region)
+    rest = "/lol/league/#{@v}/leagues/by-summoner/#{sumid}"
 
-    rest = "/api/lol/#{server}/#{@v}/league/by-summoner/#{sumid}"
+    LeagueRates.handle_rate(region, rest)
+  end
 
-    HTTP.get(region: region, rest: rest)
+  @doc false
+  def get_entry(region, sumid) do
+    IO.warn("Godfist.League.get_entry/2 is deprecated, use Godfist.League.positions/2 instead",
+      Macro.Env.stacktrace(__ENV__))
+
+    positions(region, sumid)
   end
 
   @doc """
-  Get league entries mapped by Summoner Id from a given list of ids.
+  Get League positions in all queues for a given Summoner ID.
 
   ## Example
 
   ```elixir
-  iex> Godfist.League.get_entry(:lan, 123)
-
-  iex> Godfist.League.get_entry(:lan, [123, 456, 789])
+  iex> Godfist.League.positions(:lan, 24244)
   ```
   """
-  @spec get_entry(atom, list) :: {:ok, map} | {:error, String.t}
-  def get_entry(region, sumid) when is_list(sumid) do
-    ids = Enum.join(sumid, ",")
-    server = Atom.to_string(region)
+  @spec positions(atom, integer) :: {:ok, map} | {:error, String.t}
+  def positions(region, sumid) do
+    rest = "/lol/league/#{@v}/positions/by-summoner/#{sumid}"
 
-    rest = "/api/lol/#{server}/#{@v}/league/by-summoner/#{ids}/entry"
-
-    HTTP.get(region: region, rest: rest)
-  end
-  def get_entry(region, sumid) do
-    server = Atom.to_string(region)
-
-    rest = "/api/lol/#{server}/#{@v}/league/by-summoner/#{sumid}/entry"
-
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest)
   end
 
   @doc """
   Get challenger tier League mapped to queues.
 
-  Queues are: `flex_sr, flex_tt, solo_5, team_5, team_3`
+  Queues are: `flex_sr, flex_tt, solo_5`
 
   ## Example
 
@@ -84,14 +66,13 @@ defmodule Godfist.League do
   iex> Godfist.League.challenger(:oce, :team_3)
   ```
   """
-  @spec challenger(atom, Keyword.t) :: {:ok, map} | {:error, String.t}
+  @spec challenger(atom, atom) :: {:ok, map} | {:error, String.t}
   def challenger(region, rank_queue) do
     queue = Map.get(@queues, rank_queue)
-    server = Atom.to_string(region)
 
-    rest = "/api/lol/#{server}/#{@v}/league/challenger?type=#{queue}"
+    rest = "/lol/league/#{@v}/challengerleagues/by-queue/#{queue}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest)
   end
 
   @doc """
@@ -105,13 +86,12 @@ defmodule Godfist.League do
   iex> Godfist.League.master(:eune, :flex_sr)
   ```
   """
-  @spec master(atom, Keyword.t) :: {:ok, map} | {:error, String.t}
+  @spec master(atom, atom) :: {:ok, map} | {:error, String.t}
   def master(region, rank_queue) do
     queue = Map.get(@queues, rank_queue)
-    server = Atom.to_string(region)
 
-    rest = "/api/lol/#{server}/#{@v}/league/master?type=#{queue}"
+    rest = "/lol/league/#{@v}/masterleagues/by-queue/#{queue}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest)
   end
 end

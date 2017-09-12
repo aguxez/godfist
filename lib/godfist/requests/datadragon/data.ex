@@ -16,7 +16,7 @@ defmodule Godfist.DataDragon.Data do
   variations regarding languages on each country.
   """
 
-  alias Godfist.HTTP
+  alias Godfist.LeagueRates
 
   @dragon :dragon
   @endpoint "/7.11.1/data"
@@ -66,7 +66,7 @@ defmodule Godfist.DataDragon.Data do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/profileicon.json"
 
-    HTTP.get(region: @dragon, rest: rest)
+    LeagueRates.handle_rate(@dragon, rest, :other)
   end
 
   @doc """
@@ -83,7 +83,7 @@ defmodule Godfist.DataDragon.Data do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/champion.json"
 
-    HTTP.get(region: @dragon, rest: rest)
+    LeagueRates.handle_rate(@dragon, rest, :other)
   end
 
   @doc """
@@ -100,7 +100,7 @@ defmodule Godfist.DataDragon.Data do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/champion/#{name}.json"
 
-    HTTP.get(region: @dragon, rest: rest)
+    LeagueRates.handle_rate(@dragon, rest, :other)
   end
 
   @doc """
@@ -117,7 +117,7 @@ defmodule Godfist.DataDragon.Data do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/item.json"
 
-    HTTP.get(region: @dragon, rest: rest)
+    LeagueRates.handle_rate(@dragon, rest, :other)
   end
 
   @doc """
@@ -134,7 +134,7 @@ defmodule Godfist.DataDragon.Data do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/mastery.json"
 
-    HTTP.get(region: @dragon, rest: rest)
+    LeagueRates.handle_rate(@dragon, rest, :other)
   end
 
   @doc """
@@ -151,7 +151,7 @@ defmodule Godfist.DataDragon.Data do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/rune.json"
 
-    HTTP.get(region: @dragon, rest: rest)
+    LeagueRates.handle_rate(@dragon, rest, :other)
   end
 
   @doc """
@@ -168,9 +168,8 @@ defmodule Godfist.DataDragon.Data do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/summoner.json"
 
-    HTTP.get(region: @dragon, rest: rest)
+    LeagueRates.handle_rate(@dragon, rest, :other)
   end
-
 
   # priv to get locale
   defp get_loc(locale), do: Map.get(@languages, locale)

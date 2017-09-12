@@ -3,7 +3,7 @@ defmodule Godfist.ChampionMastery do
   Module to get Champion masteries
   """
 
-  alias Godfist.HTTP
+  alias Godfist.LeagueRates
 
   @endpoint "/lol/champion-mastery/v3"
 
@@ -20,7 +20,7 @@ defmodule Godfist.ChampionMastery do
   def by_summoner(region, id) do
     rest = @endpoint <> "/champion-masteries/by-summoner/#{id}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :other)
   end
 
   @doc """
@@ -36,7 +36,7 @@ defmodule Godfist.ChampionMastery do
   def by_champion(region, id, champ_id) do
     rest = @endpoint <> "/champion-masteries/by-summoner/#{id}/by-champion/#{champ_id}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :other)
   end
 
   @doc """
@@ -52,6 +52,6 @@ defmodule Godfist.ChampionMastery do
   def total(region, id) do
     rest = @endpoint <> "/scores/by-summoner/#{id}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :other)
   end
 end

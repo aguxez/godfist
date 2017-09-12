@@ -18,17 +18,29 @@ defmodule Godfist.HTTP do
     dragon: "https://ddragon.leagueoflegends.com/cdn"
   }
 
-  def get([region: region, rest: rest]) when region == :dragon do
+  def get(region, rest, opt \\ [])
+  def get(region, rest, _opt) when region == :dragon do
     dragon = Map.get(@endpoint, :dragon)
 
     get_body(dragon <> rest)
   end
-  def get([region: region, rest: rest]) do
+  def get(region, rest, opt) do
     url = Map.get(@endpoint, region)
 
-    region
-    |> ExRated.check_rate(time(), amount())
-    |> parse(url, rest)
+    if Mix.env() == :prod do
+      # Enforcing the time and amount of requests per method if
+      # opts provided
+      opt_time = Keyword.get(opt, :time)
+      opt_amount = Keyword.get(opt, :amount)
+
+      region
+      |> ExRated.check_rate(opt_time, opt_amount)
+      |> parse(url, rest)
+    else
+      region
+      |> ExRated.check_rate(time(), amount())
+      |> parse(url, rest)
+    end
   end
 
   defp parse({:ok, _}, url, rest) do
@@ -65,6 +77,8 @@ defmodule Godfist.HTTP do
     Application.get_env(:godfist, :token, System.get_env("RIOT_TOKEN"))
   end
 
+  # These are global definitions, rate-limits by endpoints are forced
+  # individually in each method.
   defp time do
     Application.get_env(:godfist, :time)
   end

@@ -3,7 +3,7 @@ defmodule Godfist.Summoner do
   Module to interact with the Summoner endpoint.
   """
 
-  alias Godfist.HTTP
+  alias Godfist.LeagueRates
 
   @endpoint "/lol/summoner/v3/summoners"
 
@@ -20,7 +20,7 @@ defmodule Godfist.Summoner do
   def by_id(region, id) do
     rest = @endpoint <> "/by-account/#{id}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :other)
   end
 
   @doc """
@@ -36,7 +36,7 @@ defmodule Godfist.Summoner do
   def by_name(region, name) do
     rest = @endpoint <> "/by-name/#{name}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :other)
   end
 
   @doc """
@@ -56,7 +56,7 @@ defmodule Godfist.Summoner do
     # Just that it uses summoner id instead of account id
     rest = @endpoint <> "/#{id}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :other)
   end
 
   @doc """
@@ -74,7 +74,7 @@ defmodule Godfist.Summoner do
     rest = @endpoint <> "/by-name/#{name}"
 
     # I can probably do this in a more elegant way?
-    case HTTP.get(region: region, rest: rest) do
+    case LeagueRates.handle_rate(region, rest, :other) do
       {:ok, "Not found"} ->
         {:error, "Summoner not found"}
       {:ok, summ} ->

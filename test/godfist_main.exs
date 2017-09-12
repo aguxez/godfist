@@ -1,13 +1,14 @@
 defmodule Godfist.Main do
+  @moduledoc false
+
   use ExUnit.Case
 
   test "return account id and summoner id of player" do
     {:ok, account_id} = Godfist.get_account_id(:lan, "Mjólner")
-    assert 200008206 == account_id
-
+    assert 200_008_206 == account_id
 
     {:ok, summoner_id} = Godfist.get_summid(:lan, "Mjólner")
-    assert 24244 == summoner_id
+    assert 24_244 == summoner_id
   end
 
   test "return matchlist" do

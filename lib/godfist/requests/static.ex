@@ -9,7 +9,7 @@ defmodule Godfist.Static do
   a single rune or mastery is a better id so... You can do it like this intead.
   """
 
-  alias Godfist.HTTP
+  alias Godfist.LeagueRates
 
   @endpoint "/lol/static-data/v3"
 
@@ -40,7 +40,7 @@ defmodule Godfist.Static do
     tags = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/champions?champListData=#{tags}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -53,7 +53,7 @@ defmodule Godfist.Static do
     filter = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/champions/#{id}?champData=#{filter}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -89,7 +89,7 @@ defmodule Godfist.Static do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/items?itemListData=#{tag}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -102,7 +102,7 @@ defmodule Godfist.Static do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/items/#{id}?tags=#{tag}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -112,7 +112,7 @@ defmodule Godfist.Static do
   def lang_strings(region) do
     rest = @endpoint <> "/language-strings"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -122,7 +122,7 @@ defmodule Godfist.Static do
   def languages(region) do
     rest = @endpoint <> "/languages"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -132,7 +132,7 @@ defmodule Godfist.Static do
   def maps(region) do
     rest = @endpoint <> "/maps"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -153,7 +153,7 @@ defmodule Godfist.Static do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/masteries?tags=#{tag}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -166,7 +166,7 @@ defmodule Godfist.Static do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/masteries/#{id}?masteryData=#{tag}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -176,7 +176,7 @@ defmodule Godfist.Static do
   def profile_icons(region) do
     rest = @endpoint <> "/profile-icons"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -186,7 +186,7 @@ defmodule Godfist.Static do
   def realms(region) do
     rest = @endpoint <> "/realms"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -205,7 +205,7 @@ defmodule Godfist.Static do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/runes?runeListData=#{tag}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -218,7 +218,7 @@ defmodule Godfist.Static do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/runes/#{id}?tags=#{tag}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -252,7 +252,7 @@ defmodule Godfist.Static do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/summoner-spells?spellListData=#{tag}&dataById=true"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -265,7 +265,7 @@ defmodule Godfist.Static do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/summoner-spells/#{id}?spellData=#{tag}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 
   @doc """
@@ -275,6 +275,6 @@ defmodule Godfist.Static do
   def versions(region) do
     rest = @endpoint <> "/versions"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :static)
   end
 end
