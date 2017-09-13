@@ -48,13 +48,13 @@ defmodule Godfist.LeagueRates do
   # the other endpoints (Matches, Runes, etc...)
   def handle_call({:handle_rate, region, rest, endpoint}, _from, state)
   when is_nil(endpoint) do
-    {time, amount} = Keyword.get(@rates, region)
+    {amount, time} = Keyword.get(@rates, region)
 
     {:reply, HTTP.get(region, rest, time: time, amount: amount), state}
   end
 
   def handle_call({:handle_rate, region, rest, endpoint}, _from, state) do
-    {time, amount} = Keyword.get(@rates, endpoint)
+    {amount, time} = Keyword.get(@rates, endpoint)
 
     {:reply, HTTP.get(region, rest, time: time, amount: amount), state}
   end

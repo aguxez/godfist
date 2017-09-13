@@ -49,8 +49,8 @@ defmodule Godfist.HTTP do
   # Returns tuple to check limits on ExRated for dev keys.
   defp check_exrated_limits(region) do
     {
-      ExRated.check_rate("#{region}-1", 20, 1000),
-      ExRated.check_rate("#{region}-2", 100, 120_000)
+      ExRated.check_rate("#{region}-1", 1000, 20),
+      ExRated.check_rate("#{region}-2", 120_000, 100)
     }
   end
 
