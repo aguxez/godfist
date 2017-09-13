@@ -1,4 +1,4 @@
-# Godfist
+# Godfist [![Build Status](https://travis-ci.org/aguxez/godfist.svg?branch=rate-limits-back)](https://travis-ci.org/aguxez/godfist)
 
 ## Godfist is a wrapper for League of Legends' ReST API written in Elixir.
 
