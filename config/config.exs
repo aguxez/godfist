@@ -8,4 +8,4 @@ else
   config :godfist, rates: :dev
 end
 
-import_config "#{Mix.env}.exs"
+# import_config "#{Mix.env}.exs"
