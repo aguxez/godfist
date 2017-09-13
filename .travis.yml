@@ -6,3 +6,4 @@ otp_release:
 branches:
   only:
     - smarter-rate-limits
+    - master
