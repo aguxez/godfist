@@ -13,9 +13,7 @@ defmodule Godfist do
 
   ```elixir
   config :godfist,
-  token: "YOUR API KEY",
-  time: 1000, # This is the minimum default from Riot, set this time in miliseconds.
-  amount: 10 # Amount of request limit, default minium is 10 each 10 seconds.
+    token: "YOUR API KEY"
   ```
   """
 
@@ -209,7 +207,7 @@ defmodule Godfist do
     end
   end
 
-  # Map trough the champ list and filter the ones that are similar to the given
+  # Map through the champ list and filter the ones that are similar to the given
   # name.
   defp find_champs(champ_list, name) do
     Enum.filter(champ_list, fn{_k, v} -> String.contains?(v["name"], name) end)
