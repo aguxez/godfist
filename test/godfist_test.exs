@@ -1,14 +1,15 @@
 defmodule GodfistTest do
+  @moduledoc false
+
   use ExUnit.Case
 
   alias Godfist.{ChampionMastery, Champion, League, Status, Masteries,
         Match, Runes, Spectator, Static, Summoner}
 
-  @sumid 24244
-  @sumids [200203, 24244]
-  @lasid 204359681
-  @lasmatchid 460035794
-  @naid 39626602
+  @sumid 24_244
+  @lasid 204_359_681
+  @lasmatchid 460_035_794
+  @naid 39_626_602
   @champid 64
 
   # Champion mastery tests.
@@ -40,18 +41,14 @@ defmodule GodfistTest do
   # League tests
   test "return league information about given players" do
     single = League.get_all(:lan, @sumid)
-    multiple = League.get_all(:lan, @sumids)
 
     assert {:ok, _} = single
-    assert {:ok, _} = multiple
   end
 
   test "return information about players" do
     single = League.get_entry(:lan, @sumid)
-    multiple = League.get_entry(:lan, @sumids)
 
     assert {:ok, _} = single
-    assert {:ok, _} = multiple
   end
 
   test "return challenger league" do
@@ -180,7 +177,7 @@ defmodule GodfistTest do
   end
 
   test "return summoner by sumoner id" do
-    assert {:ok, _} = Summoner.by_summid(:las, 12200604) # Summoner id
+    assert {:ok, _} = Summoner.by_summid(:las, 12_200_604) # Summoner id
   end
 
   test "return id of summoner by name" do

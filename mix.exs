@@ -1,17 +1,21 @@
 defmodule Godfist.Mixfile do
+  @moduledoc false
+
   use Mix.Project
 
   def project do
-    [app: :godfist,
-     version: "0.2.2",
-     elixir: "~> 1.4",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     test_coverage: [tool: ExCoveralls],
+    [
+      app: :godfist,
+      version: "0.3.0",
+      elixir: "~> 1.4",
+      build_embedded: Mix.env == :prod,
+      start_permanent: Mix.env == :prod,
+      test_coverage: [tool: ExCoveralls],
       preferred_cli_env: ["coveralls": :test, "coveralls.html": :test],
-     description: description(),
-     package: pkg(),
-     deps: deps()]
+      description: description(),
+      package: pkg(),
+      deps: deps()
+    ]
   end
 
   defp description do
@@ -41,6 +45,7 @@ defmodule Godfist.Mixfile do
       {:poison, "~> 3.1"},
       {:ex_rated, "~> 1.3"},
       {:cachex, "~> 2.1"},
+
       {:credo, "~> 0.7.4", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:excoveralls, "~> 0.6", only: :test}

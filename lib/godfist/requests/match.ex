@@ -3,7 +3,7 @@ defmodule Godfist.Match do
   Module to interact with the match endpoint.
   """
 
-  alias Godfist.HTTP
+  alias Godfist.LeagueRates
 
   @v "v3"
 
@@ -21,7 +21,7 @@ defmodule Godfist.Match do
     # This function gets a specific information about a match.
     rest = "/lol/match/#{@v}/matches/#{matchid}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :match)
   end
 
   @doc """
@@ -47,7 +47,8 @@ defmodule Godfist.Match do
   """
   @spec matchlist(atom, integer, Keyword.t) :: {:ok, map} | {:error, String.t}
   def matchlist(region, id, opts \\ []) do
-    # This one retrieves a list of match from a given player with optional filters.
+    # This one retrieves a list of match from a given player with optional
+    # filters.
     opt = Keyword.merge([], opts)
 
     # Yes, I know this not so appealing.
@@ -56,7 +57,7 @@ defmodule Godfist.Match do
       "queue=#{opt[:queue]}&endIndex=#{opt[:end_index]}&season=#{opt[:season]}&" <>
       "champion=#{opt[:champion]}&beginIndex=#{opt[:begin_index]}&endTime=#{opt[:end_time]}"
 
-    HTTP.get(region: region, rest: rest)
+      LeagueRates.handle_rate(region, rest, :matchlist)
   end
 
   @doc """
@@ -72,7 +73,7 @@ defmodule Godfist.Match do
   def recent(region, id) do
     rest = "/lol/match/#{@v}/matchlists/by-account/#{id}/recent"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :matchlist)
   end
 
   @doc """
@@ -88,7 +89,7 @@ defmodule Godfist.Match do
   def timeline(region, id) do
     rest = "/lol/match/#{@v}/timelines/by-match/#{id}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :match)
   end
 
   @doc """
@@ -103,14 +104,15 @@ defmodule Godfist.Match do
   @spec tournament_by_code(atom, integer) :: {:ok, map} | {:error, String.t}
   def tournament_by_code(region, tournament_id) do
     # Have in mind that if you don't have permissions to fetch this api
-    # it will most likely return a 404. You can't use this one with a development
-    # key, you must register your application.
+    # it will most likely return a 404. You can't use this one with a
+    # development key, you must register your application.
     #
-    # I didn't test these two endpoints because I don't have permissions but they
+    # I didn't test these two endpoints because I don't have permissions but
+    # they
     # should work as intended, if anything, please let me know.
     rest = "/lol/match/#{@v}/matches/by-tournament-code/#{tournament_id}/ids"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :other)
   end
 
   @doc """
@@ -126,6 +128,6 @@ defmodule Godfist.Match do
   def tournament_by_match(region, match_id, tournament_id) do
     rest = "/lol/match/#{@v}/matches/#{match_id}/by-tournament-code/#{tournament_id}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :other)
   end
 end

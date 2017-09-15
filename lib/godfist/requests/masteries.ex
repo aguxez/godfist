@@ -3,7 +3,7 @@ defmodule Godfist.Masteries do
   Module to interact with the masteries endpoint.
   """
 
-  alias Godfist.HTTP
+  alias Godfist.LeagueRates
 
   @v "v3"
 
@@ -20,6 +20,6 @@ defmodule Godfist.Masteries do
   def get(region, sumid) do
     rest = "/lol/platform/#{@v}/masteries/by-summoner/#{sumid}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :champion_masteries_runes)
   end
 end

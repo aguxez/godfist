@@ -3,7 +3,7 @@ defmodule Godfist.Status do
   Status endpoint.
   """
 
-  alias Godfist.HTTP
+  alias Godfist.LeagueRates
 
   @v "v3"
 
@@ -16,6 +16,6 @@ defmodule Godfist.Status do
   def shard(region) do
     rest = "/lol/status/#{@v}/shard-data"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :other)
   end
 end

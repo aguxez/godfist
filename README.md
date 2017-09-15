@@ -1,4 +1,4 @@
-# Godfist
+# Godfist [![Build Status](https://travis-ci.org/aguxez/godfist.svg?branch=rate-limits-back)](https://travis-ci.org/aguxez/godfist)
 
 ## Godfist is a wrapper for League of Legends' ReST API written in Elixir.
 
@@ -13,7 +13,7 @@ First include `godfist` in your `mix.exs` and add it to your applications.
 ```elixir
 [extra_applications: :godfist, ...]
 ...
-{:godfist, "~> 0.2.2"}
+{:godfist, "~> 0.3.0"}
 ```
 
 You can use `{:godfist, github: "aguxez/godfist"}` for the development version.
@@ -25,12 +25,18 @@ Remember to set your api key on your `config.exs` with the next params.
 
 ```elixir
 config :godfist,
-token: "YOUR API KEY",
-time: 1000, # This is the minimum default from Riot, set this time in miliseconds.
-amount: 20 # Amount of request limit, default minimum is 20 each second for development.
+  token: "YOUR API KEY"
 ```
 
-Or export the api key as "RIOT_TOKEN": `export RIOT_TOKEN="token"`
+Or export the api key as "RIOT_TOKEN": `export RIOT_TOKEN="token"` and start making calls.
+
+## Changes
+### 0.3.0
+1. Deprecated `Godfist.League.get_entry/2` for `Godfist.League.positions/2`.
+2. Rate limit options are not given to `config.exs` anymore, just `:token`.
+3. Implemented a different way of handling rate limits, soon to be overridable for your own solution.
 
 
-#### TODO: Add tournament endpoints.
+### TODO
+- [ ] Add tournament endpoints.
+- [ ] Let users implement their own rate limit solutions instead of the built-in.

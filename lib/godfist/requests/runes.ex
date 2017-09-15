@@ -3,7 +3,7 @@ defmodule Godfist.Runes do
   Module to interact with the Runes endpoint.
   """
 
-  alias Godfist.HTTP
+  alias Godfist.LeagueRates
 
   @v "v3"
 
@@ -20,6 +20,6 @@ defmodule Godfist.Runes do
   def summoner(region, id) do
     rest = "/lol/platform/#{@v}/runes/by-summoner/#{id}"
 
-    HTTP.get(region: region, rest: rest)
+    LeagueRates.handle_rate(region, rest, :champion_masteries_runes)
   end
 end

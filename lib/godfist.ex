@@ -13,9 +13,7 @@ defmodule Godfist do
 
   ```elixir
   config :godfist,
-  token: "YOUR API KEY",
-  time: 1000, # This is the minimum default from Riot, set this time in miliseconds.
-  amount: 10 # Amount of request limit, default minium is 10 each 10 seconds.
+    token: "YOUR API KEY"
   ```
   """
 
@@ -145,9 +143,8 @@ defmodule Godfist do
   iex> Godfist.champion_by_name(["Lee Sin", "Rek'Sai", "Nocturne"])
   ```
   """
-  def champion_by_name(champions, locale \\ :us)
-
   @spec champion_by_name(list, atom) :: list | MatchError
+  def champion_by_name(champions, locale \\ :us)
   def champion_by_name(champions, locale) when is_list(champions) do
     champions
     |> Stream.map(fn champs -> champion_by_name(champs, locale) end)
@@ -210,9 +207,9 @@ defmodule Godfist do
     end
   end
 
-  # Map trough the champ list and filter the ones that are similar to the name given.
-  defp find_champs(champ_list, name), do:
-    champ_list
-    |> Enum.filter(fn{_k, v} -> String.contains?(v["name"], name) end)
-    |> Enum.map(&(&1))
+  # Map through the champ list and filter the ones that are similar to the given
+  # name.
+  defp find_champs(champ_list, name) do
+    Enum.filter(champ_list, fn{_k, v} -> String.contains?(v["name"], name) end)
+  end
 end
