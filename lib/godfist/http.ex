@@ -38,7 +38,7 @@ defmodule Godfist.HTTP do
         opt_time = Keyword.get(opt, :time)
         opt_amount = Keyword.get(opt, :amount)
 
-        region
+        "#{region}_endpoint"
         |> ExRated.check_rate(opt_time, opt_amount)
         |> parse(url, rest)
       _ ->
@@ -49,11 +49,12 @@ defmodule Godfist.HTTP do
   # Returns tuple to check limits on ExRated for dev keys.
   defp check_exrated_limits(region) do
     {
-      ExRated.check_rate("#{region}-1", 1000, 20),
-      ExRated.check_rate("#{region}-2", 120_000, 100)
+      ExRated.check_rate("#{region}_short", 1000, 20),
+      ExRated.check_rate("#{region}_long", 120_000, 100)
     }
   end
 
+  # this function is for :prod rates
   defp parse({:ok, _}, url, rest), do: parse(url, rest)
   defp parse({:error, _}, _, _), do: {:error, "Rate limit hit"}
   defp parse(url, rest) do
