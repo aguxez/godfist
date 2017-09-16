@@ -35,6 +35,7 @@ Or export the api key as "RIOT_TOKEN": `export RIOT_TOKEN="token"` and start mak
 1. Deprecated `Godfist.League.get_entry/2` for `Godfist.League.positions/2`.
 2. Rate limit options are not given to `config.exs` anymore, just `:token`.
 3. Implemented a different way of handling rate limits, soon to be overridable for your own solution.
+4. Removed some queues from the `Godfist.League` module.
 
 
 ### TODO
