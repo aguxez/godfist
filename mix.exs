@@ -28,6 +28,7 @@ defmodule Godfist.Mixfile do
     [
       maintainers: ["Miguel Diaz"],
       licenses: ["MIT"],
+      files: ["lib", "priv", "mix.exs", "README.md", "LICENSE*", "config"],
       links: %{"Github" => "https://github.com/aguxez/godfist"}
     ]
   end
