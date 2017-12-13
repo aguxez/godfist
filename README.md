@@ -25,7 +25,8 @@ Remember to set your api key on your `config.exs` with the next params.
 
 ```elixir
 config :godfist,
-  token: "YOUR API KEY"
+  token: "YOUR API KEY",
+  rates: :dev # or :prod
 ```
 
 Or export the api key as "RIOT_TOKEN": `export RIOT_TOKEN="token"` and start making calls.
