@@ -19,7 +19,7 @@ defmodule Godfist.DataDragon.Data do
   alias Godfist.LeagueRates
 
   @dragon :dragon
-  @endpoint "/7.11.1/data"
+  @endpoint "/7.24.2/data"
   @languages %{
     czech: "cs_CZ",
     german: "de_DE",

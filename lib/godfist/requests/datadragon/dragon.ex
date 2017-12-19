@@ -10,7 +10,7 @@ defmodule Godfist.DataDragon do
 
   alias Godfist.{Static, DataDragon.Data}
 
-  @v "7.11.1"
+  @v "7.24.2"
   @endpoint "https://ddragon.leagueoflegends.com/cdn"
 
   @doc """
