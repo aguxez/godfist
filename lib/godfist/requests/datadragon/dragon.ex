@@ -49,7 +49,7 @@ defmodule Godfist.DataDragon do
   ```
   """
   @spec champ_loading(String.t, integer) :: String.t
-  def champ_loading(name, number) do
+  def champ_loading(name, number \\ 0) do
     @endpoint <> "/img/champion/loading/#{get_name(name)}_#{number}.jpg"
   end
 
