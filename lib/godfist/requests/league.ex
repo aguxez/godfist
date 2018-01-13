@@ -13,18 +13,23 @@ defmodule Godfist.League do
     solo_5: "RANKED_SOLO_5x5"
   }
 
+  @doc false
+  def get_all(_region, _sumid) do
+    IO.warn("Godfist.League.get_all/2 is deprecated, use Godfist.League.league_by_id/2 instead",
+      Macro.Env.stacktrace(__ENV__))
+  end
+
   @doc """
-  Get a list of the players from a league of the given Summoner id.
+  Get League with given ID, including inactive entries.
 
   ## Example
 
   ```elixir
-  iex> Godfist.League.get_all(:lan, 123)
+  iex> Godfist.League.league_by_id(:lan, "9150f9f0-cf08-11e6-8809-d4ae52a70a5a")
   ```
   """
-  @spec get_all(atom, integer) :: {:ok, map} | {:error, String.t}
-  def get_all(region, sumid) do
-    rest = "/lol/league/#{@v}/leagues/by-summoner/#{sumid}"
+  def league_by_id(region, league_id) do
+    rest = "/lol/league/#{@v}/leagues/#{league_id}"
 
     LeagueRates.handle_rate(region, rest)
   end

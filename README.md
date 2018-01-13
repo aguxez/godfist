@@ -38,6 +38,9 @@ Or export the api key as "RIOT_TOKEN": `export RIOT_TOKEN="token"` and start mak
 3. Implemented a different way of handling rate limits, soon to be overridable for your own solution.
 4. Removed some queues from the `Godfist.League` module.
 
+### 0.3.1
+1. Deprecated `Godfist.League.get_all/2` for `Godfist.League.league_by_id/2`.
+
 
 ### TODO
 - [ ] Add tournament endpoints.
