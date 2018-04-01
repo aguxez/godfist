@@ -35,20 +35,23 @@ defmodule Godfist.Mixfile do
 
   def application do
     [
-      extra_applications: [:logger, :httpoison, :poison, :ex_rated, :cachex],
+      extra_applications: [:logger, :jason, :httpoison, :ex_rated, :cachex],
       mod: {Godfist.Application, []}
     ]
   end
 
   defp deps do
     [
-      {:httpoison, "~> 0.11.2"},
-      {:poison, "~> 3.1"},
+      {:httpoison, "~> 1.0"},
+      {:jason, "1.0.0"},
       {:ex_rated, "~> 1.3"},
       {:cachex, "~> 2.1"},
+
       {:credo, "~> 0.7.4", only: [:dev, :test]},
+
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:excoveralls, "~> 0.6", only: :test}
+      {:excoveralls, "~> 0.6", only: :test},
+      {:exvcr, "~> 0.10", only: :test}
     ]
   end
 end
