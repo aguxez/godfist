@@ -28,7 +28,7 @@ defmodule Godfist do
   def get_account_id(region, name) do
     with {:missing, nil} <- Cachex.get(:id_cache, "id_#{inc(name)}"),
          {:ok, id} when is_integer(id) <- Summoner.get_id(region, name) do
-      Cachex.set!(:id_cache, "id_#{inc(name)}", id)
+      set_cache(:id_cache, "id_#{inc(name)}", id)
       {:ok, id}
     else
       {:ok, id} ->
@@ -37,6 +37,10 @@ defmodule Godfist do
       {:error, reason} ->
         {:error, reason}
     end
+  end
+
+  defp set_cache(name, key, value, opts \\ []) do
+    Cachex.set(name, key, value, opts)
   end
 
   @doc """
@@ -53,7 +57,7 @@ defmodule Godfist do
     case Cachex.get(:summid_cache, "summid_#{inc(name)}") do
       {:missing, nil} ->
         {:ok, %{"id" => summid}} = Summoner.by_name(region, name)
-        Cachex.set!(:summid_cache, "summid_#{inc(name)}", summid)
+        set_cache(:summid_cache, "summid_#{inc(name)}", summid)
         {:ok, summid}
 
       {:ok, summid} ->
@@ -126,7 +130,7 @@ defmodule Godfist do
   def champion(region, id) do
     with {:missing, nil} <- Cachex.get(:champion, "champ_#{id}"),
          {:ok, champ} <- Champion.by_id(region, id) do
-      Cachex.set!(:champion, "champ_#{id}", champ)
+      set_cache(:champion, "champ_#{id}", champ)
       {:ok, champ}
     else
       {:ok, champ} ->
@@ -162,7 +166,7 @@ defmodule Godfist do
       {:missing, nil} ->
         {:ok, champs} = DataDragon.Data.champions(locale)
 
-        Cachex.set!(:all_champs, "all_champs", champs)
+        set_cache(:all_champs, "all_champs", champs)
 
         find_single_champ(champs, name)
 
@@ -202,7 +206,7 @@ defmodule Godfist do
   def find_similar(name, locale \\ :us) do
     with {:missing, nil} <- Cachex.get(:all_champs, "all_champs"),
          {:ok, %{"data" => map}} <- DataDragon.Data.champions(locale) do
-      Cachex.set!(:all_champs, "all_champs", map)
+      set_cache(:all_champs, "all_champs", map)
 
       find_champs(map, name)
     else

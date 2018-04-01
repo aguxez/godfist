@@ -40,7 +40,7 @@ defmodule Godfist.HTTP do
         opt_time = Keyword.get(opt, :time)
         opt_amount = Keyword.get(opt, :amount)
 
-        "#{region}_endpoint"
+        region <> "_endpoint"
         |> ExRated.check_rate(opt_time, opt_amount)
         |> parse(url, rest)
 

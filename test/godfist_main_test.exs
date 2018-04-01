@@ -1,4 +1,4 @@
-defmodule Godfist.Main do
+defmodule Godfist.MainTest do
   @moduledoc false
 
   use ExUnit.Case
