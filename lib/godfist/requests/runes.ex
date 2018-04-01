@@ -16,7 +16,7 @@ defmodule Godfist.Runes do
   iex> Godfist.Runes.summoner(:ru, summid)
   ```
   """
-  @spec summoner(atom, Integer) :: {:ok, map} | {:error, String.t}
+  @spec summoner(atom, Integer) :: {:ok, map} | {:error, String.t()}
   def summoner(region, id) do
     rest = "/lol/platform/#{@v}/runes/by-summoner/#{id}"
 

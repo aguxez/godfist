@@ -15,8 +15,10 @@ defmodule Godfist.League do
 
   @doc false
   def get_all(_region, _sumid) do
-    IO.warn("Godfist.League.get_all/2 is deprecated, use Godfist.League.league_by_id/2 instead",
-      Macro.Env.stacktrace(__ENV__))
+    IO.warn(
+      "Godfist.League.get_all/2 is deprecated, use Godfist.League.league_by_id/2 instead",
+      Macro.Env.stacktrace(__ENV__)
+    )
   end
 
   @doc """
@@ -36,8 +38,10 @@ defmodule Godfist.League do
 
   @doc false
   def get_entry(region, sumid) do
-    IO.warn("Godfist.League.get_entry/2 is deprecated, use Godfist.League.positions/2 instead",
-      Macro.Env.stacktrace(__ENV__))
+    IO.warn(
+      "Godfist.League.get_entry/2 is deprecated, use Godfist.League.positions/2 instead",
+      Macro.Env.stacktrace(__ENV__)
+    )
 
     positions(region, sumid)
   end
@@ -51,7 +55,7 @@ defmodule Godfist.League do
   iex> Godfist.League.positions(:lan, 24244)
   ```
   """
-  @spec positions(atom, integer) :: {:ok, map} | {:error, String.t}
+  @spec positions(atom, integer) :: {:ok, map} | {:error, String.t()}
   def positions(region, sumid) do
     rest = "/lol/league/#{@v}/positions/by-summoner/#{sumid}"
 
@@ -71,7 +75,7 @@ defmodule Godfist.League do
   iex> Godfist.League.challenger(:oce, :flex_tt)
   ```
   """
-  @spec challenger(atom, atom) :: {:ok, map} | {:error, String.t}
+  @spec challenger(atom, atom) :: {:ok, map} | {:error, String.t()}
   def challenger(region, rank_queue) do
     queue = Map.get(@queues, rank_queue)
 
@@ -91,7 +95,7 @@ defmodule Godfist.League do
   iex> Godfist.League.master(:eune, :flex_sr)
   ```
   """
-  @spec master(atom, atom) :: {:ok, map} | {:error, String.t}
+  @spec master(atom, atom) :: {:ok, map} | {:error, String.t()}
   def master(region, rank_queue) do
     queue = Map.get(@queues, rank_queue)
 

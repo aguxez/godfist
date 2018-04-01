@@ -19,7 +19,7 @@ defmodule Godfist.Champion do
   iex> Godfist.Champion.all(:lan, ftp: true)
   ```
   """
-  @spec all(atom, Keyword.t) :: {:ok, map} | {:error, String.t}
+  @spec all(atom, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def all(region, opts \\ []) do
     free_to_play = Keyword.get(opts, :ftp, false)
     rest = @endpoint <> "?freeToPlay=#{free_to_play}"
@@ -35,7 +35,7 @@ defmodule Godfist.Champion do
   iex> Godfist.Champion.by_id(:na, 64)
   ```
   """
-  @spec by_id(atom, integer) :: {:ok, map} | {:error, String.t}
+  @spec by_id(atom, integer) :: {:ok, map} | {:error, String.t()}
   def by_id(region, id) do
     rest = @endpoint <> "#{id}"
 

@@ -22,7 +22,7 @@ defmodule Godfist.DataDragon do
   iex> Godfist.DataDragon.profile_icon(588)
   ```
   """
-  @spec profile_icon(integer) :: String.t
+  @spec profile_icon(integer) :: String.t()
   def profile_icon(id) do
     @endpoint <> "/#{@v}/img/profileicon/#{id}.png"
   end
@@ -35,7 +35,7 @@ defmodule Godfist.DataDragon do
   iex> Godfist.DataDragon.champ_splash("Aatrox", 0)
   ```
   """
-  @spec champ_splash(String.t, integer) :: String.t
+  @spec champ_splash(String.t(), integer) :: String.t()
   def champ_splash(name, number) do
     @endpoint <> "/img/champion/splash/#{get_name(name)}_#{number}.jpg"
   end
@@ -48,7 +48,7 @@ defmodule Godfist.DataDragon do
   iex> Godfist.DataDragon.champ_loading("LeeSin", 1)
   ```
   """
-  @spec champ_loading(String.t, integer) :: String.t
+  @spec champ_loading(String.t(), integer) :: String.t()
   def champ_loading(name, number \\ 0) do
     @endpoint <> "/img/champion/loading/#{get_name(name)}_#{number}.jpg"
   end
@@ -61,7 +61,7 @@ defmodule Godfist.DataDragon do
   iex> Godfist.DataDragon.champ_square("Rek Sai")
   ```
   """
-  @spec champ_square(String.t) :: String.t
+  @spec champ_square(String.t()) :: String.t()
   def champ_square(name) do
     @endpoint <> "/#{@v}/img/champion/#{get_name(name)}.png"
   end
@@ -80,7 +80,7 @@ defmodule Godfist.DataDragon do
   iex> Godfist.DataDragon.get_passive("Lee Sin")
   ```
   """
-  @spec passive(String.t) :: String.t
+  @spec passive(String.t()) :: String.t()
   def passive(name) do
     {:ok, champ} = Data.single_champ(get_name(name))
     {:ok, data} = Static.champion(:oce, champ["data"][get_name(name)]["key"], filter: "passive")
@@ -99,7 +99,7 @@ defmodule Godfist.DataDragon do
   iex> Godfist.DataDragon.ability("FlashFrost")
   ```
   """
-  @spec ability(String.t) :: String.t
+  @spec ability(String.t()) :: String.t()
   def ability(name) do
     rep = String.replace(name, " ", "")
     @endpoint <> "/#{@v}/img/spell/#{rep}.png"
@@ -114,7 +114,7 @@ defmodule Godfist.DataDragon do
   iex> Godfist.DataDragon.summ_spell("Heal")
   ```
   """
-  @spec summ_spell(String.t) :: String.t
+  @spec summ_spell(String.t()) :: String.t()
   def summ_spell(name) do
     @endpoint <> "/#{@v}/img/spell/Summoner#{String.capitalize(name)}.png"
   end
@@ -128,7 +128,7 @@ defmodule Godfist.DataDragon do
   iex> Godfist.DataDragon.item(1001)
   ```
   """
-  @spec item(integer) :: String.t
+  @spec item(integer) :: String.t()
   def item(id) do
     @endpoint <> "/#{@v}/img/item/#{id}.png"
   end
@@ -142,7 +142,7 @@ defmodule Godfist.DataDragon do
   iex> Godfist.DataDragon.mastery(6111)
   ```
   """
-  @spec mastery(integer) :: String.t
+  @spec mastery(integer) :: String.t()
   def mastery(id) do
     @endpoint <> "/#{@v}/img/mastery/#{id}.png"
   end
@@ -156,7 +156,7 @@ defmodule Godfist.DataDragon do
   iex> Godfist.DataDragon.rune(8001)
   ```
   """
-  @spec rune(integer) :: String.t
+  @spec rune(integer) :: String.t()
   def rune(id) do
     @endpoint <> "/#{@v}/img/rune/#{id}.png"
   end

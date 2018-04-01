@@ -3,8 +3,18 @@ defmodule GodfistTest do
 
   use ExUnit.Case
 
-  alias Godfist.{ChampionMastery, Champion, League, Status, Masteries,
-        Match, Runes, Spectator, Static, Summoner}
+  alias Godfist.{
+    ChampionMastery,
+    Champion,
+    League,
+    Status,
+    Masteries,
+    Match,
+    Runes,
+    Spectator,
+    Static,
+    Summoner
+  }
 
   @sumid 24_244
   @lasid 204_359_681
@@ -53,16 +63,18 @@ defmodule GodfistTest do
 
   test "return challenger league" do
     queue = [:flex_sr, :flex_tt, :solo_5]
-    Enum.map queue, fn data ->
+
+    Enum.map(queue, fn data ->
       assert {:ok, _} = League.challenger(:na, data)
-    end
+    end)
   end
 
   test "return master league" do
     queue = [:flex_sr, :solo_5]
-    Enum.map queue, fn data ->
+
+    Enum.map(queue, fn data ->
       assert {:ok, _} = League.master(:euw, data)
-    end
+    end)
   end
 
   # Status
@@ -81,7 +93,7 @@ defmodule GodfistTest do
   end
 
   test "return matchlist by account id" do
-    assert {:ok, _} = Match.matchlist(:las, @lasid, [season: 8, champion: 111])
+    assert {:ok, _} = Match.matchlist(:las, @lasid, season: 8, champion: 111)
   end
 
   test "return last 20 matches from an id" do
@@ -177,7 +189,8 @@ defmodule GodfistTest do
   end
 
   test "return summoner by sumoner id" do
-    assert {:ok, _} = Summoner.by_summid(:las, 12_200_604) # Summoner id
+    # Summoner id
+    assert {:ok, _} = Summoner.by_summid(:las, 12_200_604)
   end
 
   test "return id of summoner by name" do

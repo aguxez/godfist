@@ -12,7 +12,7 @@ defmodule Godfist.Status do
   @doc """
   Return shard data.
   """
-  @spec shard(atom) :: {:ok, map} | {:error, String.t}
+  @spec shard(atom) :: {:ok, map} | {:error, String.t()}
   def shard(region) do
     rest = "/lol/status/#{@v}/shard-data"
 

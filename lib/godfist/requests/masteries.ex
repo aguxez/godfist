@@ -16,7 +16,7 @@ defmodule Godfist.Masteries do
   iex> Godfist.Masteries.get(:lan, summid)
   ```
   """
-  @spec get(atom, integer) :: {:ok, map} | {:error, String.t}
+  @spec get(atom, integer) :: {:ok, map} | {:error, String.t()}
   def get(region, sumid) do
     rest = "/lol/platform/#{@v}/masteries/by-summoner/#{sumid}"
 

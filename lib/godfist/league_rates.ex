@@ -31,23 +31,20 @@ defmodule Godfist.LeagueRates do
   ]
 
   # API
-  def start_link,
-    do: GenServer.start_link(__MODULE__, %{}, name: :league_limit)
+  def start_link, do: GenServer.start_link(__MODULE__, %{}, name: :league_limit)
 
   def handle_rate(region, rest, endpoint \\ nil) do
-    GenServer.call(:league_limit, {:handle_rate, region, rest, endpoint},
-                   :infinity)
+    GenServer.call(:league_limit, {:handle_rate, region, rest, endpoint}, :infinity)
   end
 
   # Server
-  def init(state),
-    do: {:ok, state}
+  def init(state), do: {:ok, state}
 
   # This first handler is matching on the "Leagues" endpoints,
   # that's why endpoint is nil, that arg is meant to be used with
   # the other endpoints (Matches, Runes, etc...)
   def handle_call({:handle_rate, region, rest, endpoint}, _from, state)
-  when is_nil(endpoint) do
+      when is_nil(endpoint) do
     {amount, time} = Keyword.get(@rates, region)
 
     {:reply, HTTP.get(region, rest, time: time, amount: amount), state}

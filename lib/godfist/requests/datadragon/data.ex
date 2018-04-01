@@ -61,7 +61,7 @@ defmodule Godfist.DataDragon.Data do
   iex> Godfist.DataDragon.Data.icons(:greek)
   ```
   """
-  @spec icons(atom) :: {:ok, map} | {:error, String.t}
+  @spec icons(atom) :: {:ok, map} | {:error, String.t()}
   def icons(locale \\ :us) do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/profileicon.json"
@@ -78,7 +78,7 @@ defmodule Godfist.DataDragon.Data do
   iex> Godfist.DataDragon.Data.champions(:us)
   ```
   """
-  @spec champions(atom) :: {:ok, map} | {:error, String.t}
+  @spec champions(atom) :: {:ok, map} | {:error, String.t()}
   def champions(locale \\ :us) do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/champion.json"
@@ -95,7 +95,7 @@ defmodule Godfist.DataDragon.Data do
   iex> Godfist.DataDragon.Data.single_champ("Aatrox", :japanese)
   ```
   """
-  @spec single_champ(String.t, atom) :: {:ok, map} | {:error, String.t}
+  @spec single_champ(String.t(), atom) :: {:ok, map} | {:error, String.t()}
   def single_champ(name, locale \\ :us) do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/champion/#{name}.json"
@@ -112,7 +112,7 @@ defmodule Godfist.DataDragon.Data do
   iex> Godfist.DataDragon.Data.items(:spain)
   ```
   """
-  @spec items(atom) :: {:ok, map} | {:error, String.t}
+  @spec items(atom) :: {:ok, map} | {:error, String.t()}
   def items(locale \\ :us) do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/item.json"
@@ -129,7 +129,7 @@ defmodule Godfist.DataDragon.Data do
   iex> Godfist.DataDragon.Data.masteries()
   ```
   """
-  @spec masteries(atom) :: {:ok, map} | {:error, String.t}
+  @spec masteries(atom) :: {:ok, map} | {:error, String.t()}
   def masteries(locale \\ :us) do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/mastery.json"
@@ -146,7 +146,7 @@ defmodule Godfist.DataDragon.Data do
   iex> Godfist.DataDragon.Data.runes(:japanese)
   ```
   """
-  @spec runes(atom) :: {:ok, map} | {:error, String.t}
+  @spec runes(atom) :: {:ok, map} | {:error, String.t()}
   def runes(locale \\ :us) do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/rune.json"
@@ -163,7 +163,7 @@ defmodule Godfist.DataDragon.Data do
   iex> Godfist.DataDragon.Data.summ_spells()
   ```
   """
-  @spec summ_spells(atom) :: {:ok, map} | {:error, String.t}
+  @spec summ_spells(atom) :: {:ok, map} | {:error, String.t()}
   def summ_spells(locale \\ :us) do
     lang = get_loc(locale)
     rest = @endpoint <> "/#{lang}/summoner.json"

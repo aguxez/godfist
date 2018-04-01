@@ -35,7 +35,7 @@ defmodule Godfist.Static do
   * `stats`
   * `tags`
   """
-  @spec all_champs(atom, Keyword.t) :: {:ok, map} | {:error, String.t}
+  @spec all_champs(atom, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def all_champs(region, opts \\ []) do
     tags = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/champions?champListData=#{tags}"
@@ -48,7 +48,7 @@ defmodule Godfist.Static do
 
   Refer to `all_champs/2` for a list of options.
   """
-  @spec champion(atom, integer, Keyword.t) :: {:ok, map} | {:error, String.t}
+  @spec champion(atom, integer, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def champion(region, id, opts \\ []) do
     filter = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/champions/#{id}?champData=#{filter}"
@@ -84,7 +84,7 @@ defmodule Godfist.Static do
   * `tags`
   * `tree`
   """
-  @spec all_items(atom, Keyword.t) :: {:ok, map} | {:error, String.t}
+  @spec all_items(atom, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def all_items(region, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/items?itemListData=#{tag}"
@@ -97,7 +97,7 @@ defmodule Godfist.Static do
 
   Refer to `all_items/2` for a list of options.
   """
-  @spec item(atom, integer, Keyword.t) :: {:ok, map} | {:error, String.t}
+  @spec item(atom, integer, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def item(region, id, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/items/#{id}?tags=#{tag}"
@@ -108,7 +108,7 @@ defmodule Godfist.Static do
   @doc """
   Retrieve language strings data.
   """
-  @spec lang_strings(atom) :: {:ok, map} | {:error, String.t}
+  @spec lang_strings(atom) :: {:ok, map} | {:error, String.t()}
   def lang_strings(region) do
     rest = @endpoint <> "/language-strings"
 
@@ -118,7 +118,7 @@ defmodule Godfist.Static do
   @doc """
   Get support languages data.
   """
-  @spec languages(atom) :: {:ok, map} | {:error, String.t}
+  @spec languages(atom) :: {:ok, map} | {:error, String.t()}
   def languages(region) do
     rest = @endpoint <> "/languages"
 
@@ -128,7 +128,7 @@ defmodule Godfist.Static do
   @doc """
   Get information about all maps.
   """
-  @spec maps(atom) :: {:ok, map} | {:error, String.t}
+  @spec maps(atom) :: {:ok, map} | {:error, String.t()}
   def maps(region) do
     rest = @endpoint <> "/maps"
 
@@ -148,7 +148,7 @@ defmodule Godfist.Static do
   * `sanitizedDescription`
   * `tree`
   """
-  @spec all_masteries(atom, Kwyrod.t) :: {:ok, map} | {:error, String.t}
+  @spec all_masteries(atom, Kwyrod.t()) :: {:ok, map} | {:error, String.t()}
   def all_masteries(region, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/masteries?tags=#{tag}"
@@ -161,7 +161,7 @@ defmodule Godfist.Static do
 
   Refer to `all_masteries/2` for a list of options.
   """
-  @spec mastery(atom, integer, Kwyrod.t) :: {:ok, map} | {:error, String.t}
+  @spec mastery(atom, integer, Kwyrod.t()) :: {:ok, map} | {:error, String.t()}
   def mastery(region, id, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/masteries/#{id}?masteryData=#{tag}"
@@ -172,7 +172,7 @@ defmodule Godfist.Static do
   @doc """
   Get a list of all profile icons.
   """
-  @spec profile_icons(atom) :: {:ok, map} | {:error, String.t}
+  @spec profile_icons(atom) :: {:ok, map} | {:error, String.t()}
   def profile_icons(region) do
     rest = @endpoint <> "/profile-icons"
 
@@ -182,7 +182,7 @@ defmodule Godfist.Static do
   @doc """
   Retrieve realm data.
   """
-  @spec realms(atom) :: {:ok, map} | {:error, String.t}
+  @spec realms(atom) :: {:ok, map} | {:error, String.t()}
   def realms(region) do
     rest = @endpoint <> "/realms"
 
@@ -200,7 +200,7 @@ defmodule Godfist.Static do
   * `stats`
   * `tags`
   """
-  @spec all_runes(atom, Keyword.t) :: {:ok, map} | {:error, String.t}
+  @spec all_runes(atom, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def all_runes(region, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/runes?runeListData=#{tag}"
@@ -213,7 +213,7 @@ defmodule Godfist.Static do
 
   Reger to `all_runes/2` for a list of options.
   """
-  @spec rune(atom, integer, Keyword.t) :: {:ok, map} | {:error, String.t}
+  @spec rune(atom, integer, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def rune(region, id, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/runes/#{id}?tags=#{tag}"
@@ -247,7 +247,7 @@ defmodule Godfist.Static do
   * `tooltip`
   * `vars`
   """
-  @spec sum_spells(atom, Keyword.t) :: {:ok, map} | {:error, String.t}
+  @spec sum_spells(atom, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def sum_spells(region, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/summoner-spells?spellListData=#{tag}&dataById=true"
@@ -260,7 +260,7 @@ defmodule Godfist.Static do
 
   Refer to `sum_spells/1` for a list of options
   """
-  @spec spell(atom, integer, Keyword.t) :: {:ok, map} | {:error, String.t}
+  @spec spell(atom, integer, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def spell(region, id, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/summoner-spells/#{id}?spellData=#{tag}"
@@ -271,7 +271,7 @@ defmodule Godfist.Static do
   @doc """
   Get version data.
   """
-  @spec versions(atom) :: {:ok, map} | {:error, String.t}
+  @spec versions(atom) :: {:ok, map} | {:error, String.t()}
   def versions(region) do
     rest = @endpoint <> "/versions"
 

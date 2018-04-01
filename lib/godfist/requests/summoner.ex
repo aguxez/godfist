@@ -16,7 +16,7 @@ defmodule Godfist.Summoner do
   iex> Godfist.Summoner.by_id(:lan, id)
   ```
   """
-  @spec by_id(atom, integer) :: {:ok, map} | {:error, String.t}
+  @spec by_id(atom, integer) :: {:ok, map} | {:error, String.t()}
   def by_id(region, id) do
     rest = @endpoint <> "/by-account/#{id}"
 
@@ -32,7 +32,7 @@ defmodule Godfist.Summoner do
   iex> Godfist.Summoner.by_name(:oce, name)
   ```
   """
-  @spec by_name(atom, String.t) :: {:ok, map} | {:error, String.t}
+  @spec by_name(atom, String.t()) :: {:ok, map} | {:error, String.t()}
   def by_name(region, name) do
     rest = @endpoint <> "/by-name/#{name}"
 
@@ -50,7 +50,7 @@ defmodule Godfist.Summoner do
   iex> Godfist.Summoner.by_summid(:jp, summonerid)
   ```
   """
-  @spec by_summid(atom, integer) :: {:ok, map} | {:error, String.t}
+  @spec by_summid(atom, integer) :: {:ok, map} | {:error, String.t()}
   def by_summid(region, id) do
     # This is basically the same as above
     # Just that it uses summoner id instead of account id
@@ -68,7 +68,7 @@ defmodule Godfist.Summoner do
   iex> Godfist.Summoner.get_id(:jp, name)
   ```
   """
-  @spec get_id(atom, String.t) :: {:ok, integer} | {:error, String.t}
+  @spec get_id(atom, String.t()) :: {:ok, integer} | {:error, String.t()}
   def get_id(region, name) do
     # Get the id of the player directly by name.
     rest = @endpoint <> "/by-name/#{name}"
@@ -77,8 +77,10 @@ defmodule Godfist.Summoner do
     case LeagueRates.handle_rate(region, rest, :other) do
       {:ok, "Not found"} ->
         {:error, "Summoner not found"}
+
       {:ok, summ} ->
         {:ok, summ["accountId"]}
+
       {:error, reason} ->
         {:error, reason}
     end
