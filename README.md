@@ -45,3 +45,6 @@ Or export the api key as "RIOT_TOKEN": `export RIOT_TOKEN="token"` and start mak
 ### TODO
 - [ ] Add tournament endpoints.
 - [ ] Let users implement their own rate limit solutions instead of the built-in.
+
+### Dev Todo
+- [ ] Add more tests (Never ending)
