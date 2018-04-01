@@ -36,16 +36,6 @@ defmodule Godfist.League do
     LeagueRates.handle_rate(region, rest)
   end
 
-  @doc false
-  def get_entry(region, sumid) do
-    IO.warn(
-      "Godfist.League.get_entry/2 is deprecated, use Godfist.League.positions/2 instead",
-      Macro.Env.stacktrace(__ENV__)
-    )
-
-    positions(region, sumid)
-  end
-
   @doc """
   Get League positions in all queues for a given Summoner ID.
 

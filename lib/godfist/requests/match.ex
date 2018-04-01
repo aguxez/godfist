@@ -61,22 +61,6 @@ defmodule Godfist.Match do
   end
 
   @doc """
-  Get the last 20 matches of a given player.
-
-  ## Example
-
-  ```elixir
-  iex> Godfist.Match.recent(:lan, summid)
-  ```
-  """
-  @spec recent(atom, integer) :: {:ok, map} | {:error, String.t()}
-  def recent(region, id) do
-    rest = "/lol/match/#{@v}/matchlists/by-account/#{id}/recent"
-
-    LeagueRates.handle_rate(region, rest, :matchlist)
-  end
-
-  @doc """
   Get match timeline by match id.
 
   ## Example
