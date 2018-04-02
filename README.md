@@ -19,6 +19,7 @@ First include `godfist` in your `mix.exs` and add it to your applications.
 You can use `{:godfist, github: "aguxez/godfist"}` for the development version.
 
 #### Note: if a function is in the docs but not available in your package version, use Github's instead.
+#### Note2: The Hex package is pretty much updated in contrast to this repo, once I get down tests I'll bump the version on Hex.
 
 ## Usage
 Remember to set your api key on your `config.exs` with the next params.
