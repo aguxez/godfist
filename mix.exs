@@ -51,7 +51,7 @@ defmodule Godfist.Mixfile do
 
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:excoveralls, "~> 0.6", only: :test},
-      {:exvcr, "~> 0.10", only: :test}
+      {:bypass, "~> 0.8", only: :test}
     ]
   end
 end

@@ -31,14 +31,36 @@ defmodule Godfist.LeagueRates do
   ]
 
   # API
-  def start_link, do: GenServer.start_link(__MODULE__, %{}, name: :league_limit)
+  def start_link(port \\ []) do
+    case port do
+      [] -> do_start_link([])
+      url -> do_start_link(url)
+    end
+  end
+
+  defp do_start_link([]) do
+    GenServer.start_link(__MODULE__, %{}, name: :league_limit)
+  end
+
+  defp do_start_link(port) do
+    GenServer.start_link(__MODULE__, %{port: port}, name: :league_limit)
+  end
 
   def handle_rate(region, rest, endpoint \\ nil) do
-    GenServer.call(:league_limit, {:handle_rate, region, rest, endpoint}, 7000)
+    case Application.get_env(:godfist, :rates) do
+      :test ->
+        GenServer.call(:league_limit, :handle_test_call)
+      _ ->
+        GenServer.call(:league_limit, {:handle_rate, region, rest, endpoint}, 7000)
+    end
   end
 
   # Server
   def init(state), do: {:ok, state}
+
+  def handle_call(:handle_test_call, _from, %{port: port} = state) do
+    {:reply, HTTP.get(:test, "localhost:#{port}", []), state}
+  end
 
   # This first handler is matching on the "Leagues" endpoints,
   # that's why endpoint is nil, that arg is meant to be used with
