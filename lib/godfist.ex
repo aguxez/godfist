@@ -182,14 +182,10 @@ defmodule Godfist do
   defp inc(name), do: String.replace(name, " ", "@")
 
   defp find_single_champ(list, name) do
-    map =
-      list["data"]
-      |> Stream.map(& &1)
-      |> Enum.to_list()
-      |> Enum.find(fn {_k, v} -> v["name"] == name end)
-
-    {champ_name, map} = map
-    {champ_name, map}
+    list["data"]
+    |> Stream.map(& &1)
+    |> Enum.to_list()
+    |> Enum.find(fn {_k, v} -> v["name"] == name end)
   end
 
   @doc """
