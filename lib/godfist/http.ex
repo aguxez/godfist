@@ -34,7 +34,6 @@ defmodule Godfist.HTTP do
     # To ensure limit on dev keys.
     with :dev <- rates(),
          {{:ok, _}, {:ok, _}} <- check_exrated_limits(region) do
-
       parse(url, rest)
     else
       :prod ->
@@ -43,7 +42,7 @@ defmodule Godfist.HTTP do
         opt_time = Keyword.get(opts, :time)
         opt_amount = Keyword.get(opts, :amount)
 
-        region <> "_endpoint"
+        (region <> "_endpoint")
         |> ExRated.check_rate(opt_time, opt_amount)
         |> parse(url, rest)
 

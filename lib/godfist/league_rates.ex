@@ -50,6 +50,7 @@ defmodule Godfist.LeagueRates do
     case Application.get_env(:godfist, :rates) do
       :test ->
         GenServer.call(:league_limit, :handle_test_call)
+
       _ ->
         GenServer.call(:league_limit, {:handle_rate, region, rest, endpoint}, 7000)
     end
