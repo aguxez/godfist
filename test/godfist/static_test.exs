@@ -7,6 +7,8 @@ defmodule Godfist.StaticTest do
 
   alias Godfist.{Static, LeagueRates}
 
+  @champid 64
+
   setup do
     bypass = Bypass.open()
     LeagueRates.start_link(bypass.port)

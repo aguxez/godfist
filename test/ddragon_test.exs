@@ -1,9 +1,11 @@
 defmodule DdragonTest do
+  @moduledoc false
+
   use ExUnit.Case
 
   alias Godfist.{DataDragon, DataDragon.Data}
 
-  @v "7.11.1"
+  @v "7.24.2"
   @endpoint "https://ddragon.leagueoflegends.com/cdn"
 
   # Static links
