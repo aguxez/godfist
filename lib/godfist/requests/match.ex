@@ -51,7 +51,7 @@ defmodule Godfist.Match do
     # filters.
     opt = Keyword.merge([], opts)
 
-    # Yes, I know this not so appealing.
+    # Yes, I know this not appealing.
     rest =
       "/lol/match/#{@v}/matchlists/by-account/#{id}?beginTime=#{opt[:begin_time]}&" <>
         "queue=#{opt[:queue]}&endIndex=#{opt[:end_index]}&season=#{opt[:season]}&" <>
