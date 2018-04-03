@@ -40,7 +40,10 @@ defmodule Godfist do
   end
 
   defp set_cache(name, key, value, opts \\ []) do
-    Cachex.set(name, key, value, opts)
+    case Application.get_env(:godfist, :rates) do
+      :test -> :ok
+      _ -> Cachex.set(name, key, value, opts)
+    end
   end
 
   @doc """

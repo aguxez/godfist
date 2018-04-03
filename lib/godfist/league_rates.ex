@@ -49,7 +49,7 @@ defmodule Godfist.LeagueRates do
   def handle_rate(region, rest, endpoint \\ nil) do
     case Application.get_env(:godfist, :rates) do
       :test ->
-        GenServer.call(:league_limit, :handle_test_call)
+        GenServer.call(:league_limit, {:handle_test_call, rest})
 
       _ ->
         GenServer.call(:league_limit, {:handle_rate, region, rest, endpoint}, 7000)
@@ -59,15 +59,18 @@ defmodule Godfist.LeagueRates do
   # Server
   def init(state), do: {:ok, state}
 
-  def handle_call(:handle_test_call, _from, %{port: port} = state) do
+  def handle_call({:handle_test_call, rest}, _from, %{port: :dragon} = state) do
+    {:reply, HTTP.get(:dragon, rest, []), state}
+  end
+
+  def handle_call({:handle_test_call, _rest}, _from, %{port: port} = state) do
     {:reply, HTTP.get(:test, "localhost:#{port}", []), state}
   end
 
   # This first handler is matching on the "Leagues" endpoints,
   # that's why endpoint is nil, that arg is meant to be used with
   # the other endpoints (Matches, Runes, etc...)
-  def handle_call({:handle_rate, region, rest, endpoint}, _from, state)
-      when is_nil(endpoint) do
+  def handle_call({:handle_rate, region, rest, nil}, _from, state) do
     {amount, time} = Keyword.get(@rates, region)
 
     {:reply, HTTP.get(region, rest, time: time, amount: amount), state}
