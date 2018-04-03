@@ -17,6 +17,7 @@ defmodule Godfist.SpectatorTest do
     Bypass.expect(bypass, fn conn ->
       Plug.Conn.resp(conn, 200, ~s({"clientRefreshInterval": 300}))
     end)
+
     assert {:ok, resp} = Spectator.featured_games(:ru)
     assert resp["clientRefreshInterval"] == 300
   end

@@ -1,8 +1,6 @@
 defmodule Godfist.StaticTest do
   @moduledoc false
 
-  # TODO: Add Reforged Runes and tarball links
-
   use ExUnit.Case, async: true
 
   alias Godfist.{Static, LeagueRates}
