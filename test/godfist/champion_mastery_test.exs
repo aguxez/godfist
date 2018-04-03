@@ -1,7 +1,7 @@
 defmodule Godfist.ChampionMasteryTest do
   @moduledoc false
 
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias Godfist.{LeagueRates, ChampionMastery}
 
