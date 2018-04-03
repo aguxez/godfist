@@ -34,15 +34,14 @@ defmodule Godfist.MatchTest do
     assert is_list(map["matches"])
   end
 
-  # TODO: Implement test
-  # test "return last 20 matches from an id", %{bypass: bypass} do
-  #   Bypass.expect(bypass, fn conn ->
-  #     Plug.Conn.resp(conn, 200, ~s({"matches": []}))
-  #   end)
+  test "return last 20 matches from an id", %{bypass: bypass} do
+    Bypass.expect(bypass, fn conn ->
+      Plug.Conn.resp(conn, 200, ~s({"matches": []}))
+    end)
 
-  #   assert {:ok, map} = Match.recent(:las, @lasid)
-  #   assert is_list(map["matches"])
-  # end
+    assert {:ok, map} = Match.recent(:las, @lasid)
+    assert is_list(map["matches"])
+  end
 
   test "return timeline data from given match", %{bypass: bypass} do
     Bypass.expect(bypass, fn conn ->

@@ -61,6 +61,16 @@ defmodule Godfist.Match do
   end
 
   @doc """
+  Get matchlist for last 20 matches played on given account ID and platform ID.
+  """
+  @spec recent(atom, integer) :: {:ok, map} | {:error, String.t()}
+  def recent(region, account_id) do
+    rest = "/lol/match/#{@v}/matchlists/by-account/#{account_id}/recent"
+
+    LeagueRates.handle_rate(region, rest, :matchlist)
+  end
+
+  @doc """
   Get match timeline by match id.
 
   ## Example
