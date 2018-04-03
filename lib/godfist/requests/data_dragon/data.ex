@@ -121,40 +121,6 @@ defmodule Godfist.DataDragon.Data do
   end
 
   @doc """
-  Get information about masteries.
-
-  ## Example
-
-  ```elixir
-  iex> Godfist.DataDragon.Data.masteries()
-  ```
-  """
-  @spec masteries(atom) :: {:ok, map} | {:error, String.t()}
-  def masteries(locale \\ :us) do
-    lang = get_loc(locale)
-    rest = @endpoint <> "/#{lang}/mastery.json"
-
-    LeagueRates.handle_rate(@dragon, rest, :other)
-  end
-
-  @doc """
-  Get information about runes.
-
-  ## Example
-
-  ```elixir
-  iex> Godfist.DataDragon.Data.runes(:japanese)
-  ```
-  """
-  @spec runes(atom) :: {:ok, map} | {:error, String.t()}
-  def runes(locale \\ :us) do
-    lang = get_loc(locale)
-    rest = @endpoint <> "/#{lang}/rune.json"
-
-    LeagueRates.handle_rate(@dragon, rest, :other)
-  end
-
-  @doc """
   Get information about summoner spells.
 
   ## Example
