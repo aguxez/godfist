@@ -190,6 +190,46 @@ defmodule Godfist.Static do
   end
 
   @doc """
+  Retrieves reforged rune path list.
+  """
+  @spec reforged_runes_path(atom) :: {:ok, list} | {:error, String.t()}
+  def reforged_runes_path(region) do
+    rest = @endpoint <> "/reforged-rune-paths"
+
+    LeagueRates.handle_rate(region, rest, :static)
+  end
+
+  @doc """
+  Retrieves reforged rune path by ID.
+  """
+  @spec reforged_rune_path_by_id(atom, integer) :: {:ok, list} | {:error, String.t()}
+  def reforged_rune_path_by_id(region, id) do
+    rest = @endpoint <> "/reforged-rune-paths/#{id}"
+
+    LeagueRates.handle_rate(region, rest, :static)
+  end
+
+  @doc """
+  Retrieves reforged runes list.
+  """
+  @spec reforged_runes(atom) :: {:ok, list} | {:error, String.t()}
+  def reforged_runes(region) do
+    rest = @endpoint <> "/reforged-runes"
+
+    LeagueRates.handle_rate(region, rest, :static)
+  end
+
+  @doc """
+  Retrieves reforged rune by ID.
+  """
+  @spec reforged_rune_by_id(atom, integer) :: {:ok, list} | {:error, String.t()}
+  def reforged_rune_by_id(region, id) do
+    rest = @endpoint <> "/reforged-runes/#{id}"
+
+    LeagueRates.handle_rate(region, rest, :static)
+  end
+
+  @doc """
   Get a list of all runes.
 
   Options are given with an atom `:filter` as key and values are:
@@ -264,6 +304,16 @@ defmodule Godfist.Static do
   def spell(region, id, opts \\ []) do
     tag = Keyword.get(opts, :filter, "all")
     rest = @endpoint <> "/summoner-spells/#{id}?spellData=#{tag}"
+
+    LeagueRates.handle_rate(region, rest, :static)
+  end
+
+  @doc """
+  Retrieves full tarball link
+  """
+  @spec tarball_links(atom) :: {:ok, String.t()} | {:error, String.t()}
+  def tarball_links(region) do
+    rest = @endpoint <> "/tarball-links"
 
     LeagueRates.handle_rate(region, rest, :static)
   end

@@ -115,6 +115,42 @@ defmodule Godfist.StaticTest do
     assert resp["l"] == "es_MX"
   end
 
+  test "returns reforged runes path", %{bypass: bypass} do
+    Bypass.expect(bypass, fn conn ->
+      Plug.Conn.resp(conn, 200, ~s([{"slots": []}]))
+    end)
+
+    assert {:ok, resp} = Static.reforged_runes_path(:lan)
+    assert is_list(resp)
+  end
+
+  test "returns reforged rune path by id", %{bypass: bypass} do
+    Bypass.expect(bypass, fn conn ->
+      Plug.Conn.resp(conn, 200, ~s([{"slots": []}]))
+    end)
+
+    assert {:ok, resp} = Static.reforged_rune_by_id(:lan, 8200)
+    assert is_list(resp)
+  end
+
+  test "returns reforged runes list", %{bypass: bypass} do
+    Bypass.expect(bypass, fn conn ->
+      Plug.Conn.resp(conn, 200, ~s([{"runePathName": "Dominacion"}]))
+    end)
+
+    assert {:ok, resp} = Static.reforged_runes(:lan)
+    assert hd(resp)["runePathName"] == "Dominacion"
+  end
+
+  test "returns reforged rune by id", %{bypass: bypass} do
+    Bypass.expect(bypass, fn conn ->
+      Plug.Conn.resp(conn, 200, ~s({"name": "Cazador Ingenioso"}))
+    end)
+
+    assert {:ok, resp} = Static.reforged_rune_by_id(:lan, 8134)
+    assert resp["name"] == "Cazador Ingenioso"
+  end
+
   test "return runes data", %{bypass: bypass} do
     Bypass.expect(bypass, fn conn ->
       Plug.Conn.resp(conn, 200, ~s({"type": "rune"}))
@@ -149,6 +185,17 @@ defmodule Godfist.StaticTest do
 
     assert {:ok, resp} = Static.spell(:oce, 34)
     assert resp["id"] == 34
+  end
+
+  test "returns tarball links", %{bypass: bypass} do
+    tar = "http://ddragon.leagueoflegends.com/cdn/dragontail-8.6.1.tgz"
+
+    Bypass.expect(bypass, fn conn ->
+      Plug.Conn.resp(conn, 200, ~s("#{tar}"))
+    end)
+
+    assert {:ok, string} = Static.tarball_links(:ru)
+    assert string == tar
   end
 
   test "return versions", %{bypass: bypass} do
