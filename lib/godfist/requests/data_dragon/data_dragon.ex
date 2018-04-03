@@ -8,8 +8,6 @@ defmodule Godfist.DataDragon do
   champion's names correctly.
   """
 
-  alias Godfist.{Static, DataDragon.Data}
-
   @v "7.24.2"
   @endpoint "https://ddragon.leagueoflegends.com/cdn"
 
@@ -64,29 +62,6 @@ defmodule Godfist.DataDragon do
   @spec champ_square(String.t()) :: String.t()
   def champ_square(name) do
     @endpoint <> "/#{@v}/img/champion/#{get_name(name)}.png"
-  end
-
-  @doc """
-  Get a passive ability.
-
-  Note: For now I can take care of spaces and punctuation but the name itself
-  has to be written correctly(case sensitive) otherwise Data Dragon will return
-  a 404 since I don't exactly know how their files are handled. I.E. In the URL
-  you can have RekSai (which is valid) but KhaZix is not valid, instead is Khazix
-  so please, case sensitive until I find a way to make this simpler.
-
-  ## Example
-  ```elixir
-  iex> Godfist.DataDragon.get_passive("Lee Sin")
-  ```
-  """
-  @spec passive(String.t()) :: String.t()
-  def passive(name) do
-    {:ok, champ} = Data.single_champ(get_name(name))
-    {:ok, data} = Static.champion(:oce, champ["data"][get_name(name)]["key"], filter: "passive")
-    data = data["passive"]["image"]["full"]
-
-    @endpoint <> "/#{@v}/img/passive/#{data}"
   end
 
   @doc """
@@ -161,7 +136,7 @@ defmodule Godfist.DataDragon do
     @endpoint <> "/#{@v}/img/rune/#{id}.png"
   end
 
-  # Get champion Data Dragon champion name from in-game champion name.
+  # Get Data Dragon champion name from in-game champion name.
   defp get_name(champion) do
     {name, _map} = Godfist.champion_by_name(champion)
     name
