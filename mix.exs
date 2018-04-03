@@ -6,7 +6,7 @@ defmodule Godfist.Mixfile do
   def project do
     [
       app: :godfist,
-      version: "0.3.0",
+      version: "0.5.0",
       elixir: "~> 1.4",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -28,7 +28,7 @@ defmodule Godfist.Mixfile do
     [
       maintainers: ["Miguel Diaz"],
       licenses: ["MIT"],
-      files: ["lib", "priv", "mix.exs", "README.md", "LICENSE*", "config"],
+      files: ["lib", "priv", "mix.exs", "README.md", "LICENSE*", "config/config.exs"],
       links: %{"Github" => "https://github.com/aguxez/godfist"}
     ]
   end
