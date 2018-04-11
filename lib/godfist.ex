@@ -17,7 +17,7 @@ defmodule Godfist do
   ```
   """
 
-  alias Godfist.{Summoner, Match, Spectator, Champion, DataDragon}
+  alias Godfist.{Summoner, Match, Spectator, Champion, DataDragon, Static}
 
   @doc """
   Get the account id of a player by it's region and name.
@@ -145,7 +145,7 @@ defmodule Godfist do
   end
 
   @doc """
-  Get a specific champion it's name. This is useful to work with the `Godfist.DataDragon` endpoints.
+  Get a specific champion by it's name. This is useful to work with `Godfist.DataDragon` endpoints.
 
   ## Example
 
@@ -179,6 +179,37 @@ defmodule Godfist do
       {:error, reason} ->
         {:error, reason}
     end
+  end
+
+  @doc """
+  Get a champion's information by it's ID.
+
+  ## Example
+
+  ```elixir
+  iex> Godfist.champion_by_id(:lan, 64)
+  ```
+  """
+  @spec champion_by_id(atom, integer) :: {:ok, map} | {:error, String.t()}
+  def champion_by_id(region, champ_id) do
+    case Cachex.get(:static_champs, "static_champs") do
+      {:missing, nil} ->
+        {:ok, champs} = Static.all_champs(region, dataById: true, tags: "keys")
+
+        set_cache(:static_champs, "static_champs", champs)
+
+        find_champ_by_id(champs, champ_id)
+
+      {:ok, champs} ->
+        find_champ_by_id(champs, champ_id)
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  defp find_champ_by_id(champs, champ_id) do
+    {:ok, Map.get(champs["data"], to_string(champ_id))["name"]}
   end
 
   # Makes everything 1 word, "inc" is short for inconsistency.
