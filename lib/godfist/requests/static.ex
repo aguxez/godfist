@@ -16,8 +16,9 @@ defmodule Godfist.Static do
   @doc """
   Get a list of all champs.
 
-  One option must be passed, otherwise "all" is returned.
-  Options are given with the `:filter` key with one of these values.
+  One option must be passed, otherwise everything is returned.
+  Consult: https://developer.riotgames.com/api-methods/#lol-static-data-v3/GET_getChampionList
+  for a list of options and their names.
 
   * `all`
   * `allytips`
@@ -37,8 +38,12 @@ defmodule Godfist.Static do
   """
   @spec all_champs(atom, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def all_champs(region, opts \\ []) do
-    tags = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/champions?champListData=#{tags}"
+    opts =
+      opts
+      |> Enum.into(%{})
+      |> Pastry.to_query_string()
+
+    rest = @endpoint <> "/champions" <> opts
 
     LeagueRates.handle_rate(region, rest, :static)
   end
@@ -50,8 +55,12 @@ defmodule Godfist.Static do
   """
   @spec champion(atom, integer, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def champion(region, id, opts \\ []) do
-    filter = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/champions/#{id}?champData=#{filter}"
+    opts =
+      opts
+      |> Enum.into(%{})
+      |> Pastry.to_query_string()
+
+    rest = @endpoint <> "/champions/#{id}" <> opts
 
     LeagueRates.handle_rate(region, rest, :static)
   end

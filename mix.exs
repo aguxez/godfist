@@ -46,6 +46,7 @@ defmodule Godfist.Mixfile do
       {:jason, "1.0.0"},
       {:ex_rated, "~> 1.3"},
       {:cachex, "~> 2.1"},
+      {:pastry, github: "aguxez/pastry"},
       {:credo, "~> 0.9.0", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:excoveralls, "~> 0.6", only: :test},
