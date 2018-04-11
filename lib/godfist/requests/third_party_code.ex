@@ -7,10 +7,10 @@ defmodule Godfist.ThirdPartyCode do
 
   @endpoint "/lol/platform/v3/third-party-code"
 
-  @spec code(atom, integer) :: {:ok, String.t()} | {:error, String.t()}
   @doc """
   Get a third party code for a given summoner ID.
   """
+  @spec code(atom, integer) :: {:ok, String.t()} | {:error, String.t()}
   def code(region, summoner_id) do
     rest = @endpoint <> "/by-summoner/" <> summoner_id
 
