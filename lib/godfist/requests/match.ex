@@ -47,15 +47,8 @@ defmodule Godfist.Match do
   """
   @spec matchlist(atom, integer, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def matchlist(region, id, opts \\ []) do
-    # This one retrieves a list of match from a given player with optional
-    # filters.
-    opt = Keyword.merge([], opts)
-
-    # Yes, I know this not appealing.
-    rest =
-      "/lol/match/#{@v}/matchlists/by-account/#{id}?beginTime=#{opt[:begin_time]}&" <>
-        "queue=#{opt[:queue]}&endIndex=#{opt[:end_index]}&season=#{opt[:season]}&" <>
-        "champion=#{opt[:champion]}&beginIndex=#{opt[:begin_index]}&endTime=#{opt[:end_time]}"
+    opts = Pastry.to_query_string(opts)
+    rest = "/lol/match/" <> @v <> "/matchlists/by-account/#{id}" <> opts
 
     LeagueRates.handle_rate(region, rest, :matchlist)
   end
@@ -102,8 +95,7 @@ defmodule Godfist.Match do
     # development key, you must register your application.
     #
     # I didn't test these two endpoints because I don't have permissions but
-    # they
-    # should work as intended, if anything, please let me know.
+    # they should work as intended, if anything, please let me know.
     rest = "/lol/match/#{@v}/matches/by-tournament-code/#{tournament_id}/ids"
 
     LeagueRates.handle_rate(region, rest, :other)

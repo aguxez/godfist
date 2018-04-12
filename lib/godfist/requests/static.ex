@@ -19,29 +19,10 @@ defmodule Godfist.Static do
   One option must be passed, otherwise everything is returned.
   Consult: https://developer.riotgames.com/api-methods/#lol-static-data-v3/GET_getChampionList
   for a list of options and their names.
-
-  * `all`
-  * `allytips`
-  * `altimages`
-  * `blurb`
-  * `enemytips`
-  * `image`
-  * `info`
-  * `lore`
-  * `partype`
-  * `passive`
-  * `recommended`
-  * `skins`
-  * `spells`
-  * `stats`
-  * `tags`
   """
   @spec all_champs(atom, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def all_champs(region, opts \\ []) do
-    opts =
-      opts
-      |> Enum.into(%{})
-      |> Pastry.to_query_string()
+    opts = Pastry.to_query_string(opts)
 
     rest = @endpoint <> "/champions" <> opts
 
@@ -55,10 +36,7 @@ defmodule Godfist.Static do
   """
   @spec champion(atom, integer, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def champion(region, id, opts \\ []) do
-    opts =
-      opts
-      |> Enum.into(%{})
-      |> Pastry.to_query_string()
+    opts = Pastry.to_query_string(opts)
 
     rest = @endpoint <> "/champions/#{id}" <> opts
 
@@ -70,33 +48,12 @@ defmodule Godfist.Static do
 
   One option must be passed, otherwise "all" is returned.
 
-  Pass on the `:filter` key with value of:
-
-  * `all`
-  * `colloq`
-  * `consumeOnFull`
-  * `consumed`
-  * `depth`
-  * `from`
-  * `gold`
-  * `groups`
-  * `hideFromAll`
-  * `image`
-  * `inStore`
-  * `into`
-  * `maps`
-  * `requiredChampion`
-  * `sanitizedDescription`
-  * `specialRecipe`
-  * `stacks`
-  * `stats`
-  * `tags`
-  * `tree`
+  https://developer.riotgames.com/api-methods/#lol-static-data-v3/GET_getItemList
   """
   @spec all_items(atom, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def all_items(region, opts \\ []) do
-    tag = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/items?itemListData=#{tag}"
+    opts = Pastry.to_query_string(opts)
+    rest = @endpoint <> "/items" <> opts
 
     LeagueRates.handle_rate(region, rest, :static)
   end
@@ -108,8 +65,8 @@ defmodule Godfist.Static do
   """
   @spec item(atom, integer, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def item(region, id, opts \\ []) do
-    tag = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/items/#{id}?tags=#{tag}"
+    opts = Pastry.to_query_string(opts)
+    rest = @endpoint <> "/items/#{id}" <> opts
 
     LeagueRates.handle_rate(region, rest, :static)
   end
@@ -147,20 +104,13 @@ defmodule Godfist.Static do
   @doc """
   Get a list of all masteries.
 
-  Opts is atom `:filter` with a value of one of:
-
-  * `all` (Default)
-  * `image`
-  * `masteryTree`
-  * `prereq`
-  * `ranks`
-  * `sanitizedDescription`
-  * `tree`
+  See https://developer.riotgames.com/api-methods/#lol-static-data-v3/GET_getMasteryList
+  for a list of options
   """
   @spec all_masteries(atom, Kwyrod.t()) :: {:ok, map} | {:error, String.t()}
   def all_masteries(region, opts \\ []) do
-    tag = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/masteries?tags=#{tag}"
+    opts = Pastry.to_query_string(opts)
+    rest = @endpoint <> "/masteries" <> opts
 
     LeagueRates.handle_rate(region, rest, :static)
   end
@@ -172,8 +122,8 @@ defmodule Godfist.Static do
   """
   @spec mastery(atom, integer, Kwyrod.t()) :: {:ok, map} | {:error, String.t()}
   def mastery(region, id, opts \\ []) do
-    tag = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/masteries/#{id}?masteryData=#{tag}"
+    opts = Pastry.to_query_string(opts)
+    rest = @endpoint <> "/masteries/#{id}" <> opts
 
     LeagueRates.handle_rate(region, rest, :static)
   end
@@ -241,18 +191,13 @@ defmodule Godfist.Static do
   @doc """
   Get a list of all runes.
 
-  Options are given with an atom `:filter` as key and values are:
-
-  * `all` (Default)
-  * `image`
-  * `sanitizedDescription`
-  * `stats`
-  * `tags`
+  See https://developer.riotgames.com/api-methods/#lol-static-data-v3/GET_getRuneList
+  for a list of options
   """
   @spec all_runes(atom, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def all_runes(region, opts \\ []) do
-    tag = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/runes?runeListData=#{tag}"
+    opts = Pastry.to_query_string(opts)
+    rest = @endpoint <> "/runes" <> opts
 
     LeagueRates.handle_rate(region, rest, :static)
   end
@@ -264,8 +209,8 @@ defmodule Godfist.Static do
   """
   @spec rune(atom, integer, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def rune(region, id, opts \\ []) do
-    tag = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/runes/#{id}?tags=#{tag}"
+    opts = Pastry.to_query_string(opts)
+    rest = @endpoint <> "/runes/#{id}" <> opts
 
     LeagueRates.handle_rate(region, rest, :static)
   end
@@ -273,33 +218,13 @@ defmodule Godfist.Static do
   @doc """
   Get a list of all summoner spells.
 
-  Options are given with an atom `:filter` as key and values are:
-
-  * `all` (Default)
-  * `cooldown`
-  * `cooldownBurn`
-  * `cost`
-  * `costBurn`
-  * `costType`
-  * `effect`
-  * `effectBurn`
-  * `image`
-  * `key`
-  * `leveltip`
-  * `maxrank`
-  * `modes`
-  * `range`
-  * `rangeBurn`
-  * `resource`
-  * `sanitizedDescription`
-  * `sanitizedTooltip`
-  * `tooltip`
-  * `vars`
+  See https://developer.riotgames.com/api-methods/#lol-static-data-v3/GET_getSummonerSpellList
+  for a list of options
   """
   @spec sum_spells(atom, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def sum_spells(region, opts \\ []) do
-    tag = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/summoner-spells?spellListData=#{tag}&dataById=true"
+    opts = Pastry.to_query_string(opts)
+    rest = @endpoint <> "/summoner-spells" <> opts
 
     LeagueRates.handle_rate(region, rest, :static)
   end
@@ -311,8 +236,8 @@ defmodule Godfist.Static do
   """
   @spec spell(atom, integer, Keyword.t()) :: {:ok, map} | {:error, String.t()}
   def spell(region, id, opts \\ []) do
-    tag = Keyword.get(opts, :filter, "all")
-    rest = @endpoint <> "/summoner-spells/#{id}?spellData=#{tag}"
+    opts = Pastry.to_query_string(opts)
+    rest = @endpoint <> "/summoner-spells/#{id}" <> opts
 
     LeagueRates.handle_rate(region, rest, :static)
   end
