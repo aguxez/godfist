@@ -13,14 +13,6 @@ defmodule Godfist.League do
     solo_5: "RANKED_SOLO_5x5"
   }
 
-  @doc false
-  def get_all(_region, _sumid) do
-    IO.warn(
-      "Godfist.League.get_all/2 is deprecated, use Godfist.League.league_by_id/2 instead",
-      Macro.Env.stacktrace(__ENV__)
-    )
-  end
-
   @doc """
   Get League with given ID, including inactive entries.
 
