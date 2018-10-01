@@ -26,17 +26,11 @@ defmodule Godfist do
   """
   @spec get_account_id(atom, String.t()) :: {:ok, integer} | {:error, String.t()}
   def get_account_id(region, name) do
-    with {:missing, nil} <- Cachex.get(:id_cache, "id_#{inc(name)}"),
-         {:ok, id} when is_integer(id) <- Summoner.get_id(region, name) do
-      set_cache(:id_cache, "id_#{inc(name)}", id)
-      {:ok, id}
-    else
-      {:ok, id} ->
-        {:ok, id}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
+    {_, id} = Cachex.fetch(:id_cache, "id_#{inc(name)}", fn ->
+      {:ok, id} = Summoner.get_id(region, name)
+      {:commit, id}
+    end)
+    {:ok, id}
   end
 
   defp set_cache(name, key, value, opts \\ []) do
@@ -57,18 +51,11 @@ defmodule Godfist do
   """
   @spec get_summid(atom, String.t()) :: {:ok, integer} | {:error, String.t()}
   def get_summid(region, name) do
-    case Cachex.get(:summid_cache, "summid_#{inc(name)}") do
-      {:missing, nil} ->
-        {:ok, %{"id" => summid}} = Summoner.by_name(region, name)
-        set_cache(:summid_cache, "summid_#{inc(name)}", summid)
-        {:ok, summid}
-
-      {:ok, summid} ->
-        {:ok, summid}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
+    {_, summid} = Cachex.fetch(:summid_cache, "summid_#{inc(name)}", fn ->
+      {:ok, %{"id" => summid}} = Summoner.by_name(region, name)
+      {:commit, summid}
+    end)
+    {:ok, summid}
   end
 
   @doc """
@@ -131,17 +118,11 @@ defmodule Godfist do
   """
   @spec champion(atom, integer) :: {:ok, map} | {:error, String.t()}
   def champion(region, id) do
-    with {:missing, nil} <- Cachex.get(:champion, "champ_#{id}"),
-         {:ok, champ} <- Champion.by_id(region, id) do
-      set_cache(:champion, "champ_#{id}", champ)
-      {:ok, champ}
-    else
-      {:ok, champ} ->
-        {:ok, champ}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
+    {_, champ} = Cachex.fetch(:champion, "champ_#{id}", fn ->
+      {:ok, champ} = Champion.by_id(region, id)
+      {:commit, champ}
+    end)
+    {:ok, champ}
   end
 
   @doc """
@@ -165,20 +146,11 @@ defmodule Godfist do
 
   @spec champion_by_name(String.t(), atom) :: {String.t(), map} | MatchError
   def champion_by_name(name, locale) do
-    case Cachex.get(:all_champs, "all_champs") do
-      {:missing, nil} ->
-        {:ok, champs} = DataDragon.Data.champions(locale)
-
-        set_cache(:all_champs, "all_champs", champs)
-
-        find_single_champ(champs, name)
-
-      {:ok, list} ->
-        find_single_champ(list, name)
-
-      {:error, reason} ->
-        {:error, reason}
-    end
+    {_, champs} = Cachex.fetch(:all_champs, "all_champs", fn ->
+      {:ok, champs} = DataDragon.Data.champions(locale)
+      {:commit, champs}
+    end)
+    find_single_champ(champs, name)
   end
 
   @doc """
@@ -192,20 +164,11 @@ defmodule Godfist do
   """
   @spec champion_by_id(atom, integer) :: {:ok, map} | {:error, String.t()}
   def champion_by_id(region, champ_id) do
-    case Cachex.get(:static_champs, "static_champs") do
-      {:missing, nil} ->
-        {:ok, champs} = Static.all_champs(region, dataById: true, tags: "keys")
-
-        set_cache(:static_champs, "static_champs", champs)
-
-        find_champ_by_id(champs, champ_id)
-
-      {:ok, champs} ->
-        find_champ_by_id(champs, champ_id)
-
-      {:error, reason} ->
-        {:error, reason}
-    end
+    {_, champs} = Cachex.fetch(:static_champs, "static_champs", fn ->
+      {:ok, champs} = Static.all_champs(region, dataById: true, tags: "keys")
+      {:commit, champs}
+    end)
+    find_champ_by_id(champs, champ_id)
   end
 
   defp find_champ_by_id(champs, champ_id) do
@@ -234,18 +197,11 @@ defmodule Godfist do
   """
   @spec find_similar(String.t(), atom) :: list | {:error, String.t()}
   def find_similar(name, locale \\ :us) do
-    with {:missing, nil} <- Cachex.get(:all_champs, "all_champs"),
-         {:ok, %{"data" => map}} <- DataDragon.Data.champions(locale) do
-      set_cache(:all_champs, "all_champs", map)
-
-      find_champs(map, name)
-    else
-      {:ok, list} ->
-        find_champs(list, name)
-
-      {:error, reason} ->
-        {:error, reason}
-    end
+    {_, map} = Cachex.fetch(:all_champs, "all_champs", fn ->
+      {:ok, %{"data" => map}} = DataDragon.Data.champions(locale)
+      {:commit, map}
+    end)
+    find_champs(map, name)
   end
 
   # Map through the champ list and filter the ones that are similar to the given
