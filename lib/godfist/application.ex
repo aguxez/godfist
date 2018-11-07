@@ -1,6 +1,7 @@
 defmodule Godfist.Application do
   @moduledoc false
 
+  import Cachex.Spec
   import Supervisor.Spec
 
   alias Godfist.LeagueRates
@@ -19,11 +20,11 @@ defmodule Godfist.Application do
   # based on env.
   defp workers do
     [
-      worker(Cachex, [:id_cache, [default_ttl: 86_400_000], []], id: 1),
-      worker(Cachex, [:summid_cache, [default_ttl: 86_400_000], []], id: 2),
-      worker(Cachex, [:champion, [default_ttl: 86_400_000], []], id: 3),
-      worker(Cachex, [:all_champs, [default_ttl: 14_400_000], []], id: 4),
-      worker(Cachex, [:static_champs, [default_ttl: 86_400_000], []], id: 5)
+      worker(Cachex, [:id_cache, [expiration: expiration(default: 86_400_000)]], id: 1),
+      worker(Cachex, [:summid_cache, [expiration: expiration(default: 86_400_000)]], id: 2),
+      worker(Cachex, [:champion, [expiration: expiration(default: 86_400_000)]], id: 3),
+      worker(Cachex, [:all_champs, [expiration: expiration(default: 14_400_000)]], id: 4),
+      worker(Cachex, [:static_champs, [expiration: expiration(default: 86_400_000)]], id: 5)
     ]
   end
 end
